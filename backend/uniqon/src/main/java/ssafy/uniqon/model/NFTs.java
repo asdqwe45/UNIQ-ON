@@ -13,26 +13,23 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Comments {
+public class NFTs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "nft_id")
     private Integer id;
 
-    @Column(name = "time")
-    private Timestamp time;
-
-    @Column(name = "content", length = 512)
-    private String content;
+    @Column(name = "nft_address", length = 200)
+    private String nft_address;
 
     @Column(name = "image", length = 512)
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member")
     private Members member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "collection_id")
-    private Collections collection;
+    @JoinColumn(name = "medium_id")
+    private Mediums medium;
 }

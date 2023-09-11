@@ -13,27 +13,23 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Collections {
+public class Mediums {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "collection_id")
+    @Column(name = "medium_id")
     private Integer id;
 
+    @Column(name = "species", length = 100)
+    private String species;
 
     @Column(name = "image", length = 512)
     private String image;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "animal_id")
-    private Animals animal;
+    @Column(name = "feature", length = 200)
+    private String feature;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Members member;
+    @JoinColumn(name = "big_id")
+    private Bigs big;
 
-    @OneToMany(mappedBy = "collection")
-    private List<Comments> commentsList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "collection")
-    private List<My_Collections> my_collectionsList = new ArrayList<>();
 }
