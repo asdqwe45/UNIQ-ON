@@ -7,7 +7,6 @@ import java.security.Timestamp;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class WishList {

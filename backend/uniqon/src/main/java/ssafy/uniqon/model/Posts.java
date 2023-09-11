@@ -10,7 +10,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Posts{
@@ -25,9 +24,6 @@ public class Posts{
     @Column(name = "content", length = 512)
     private String content;
 
-    @Column(name = "main_image", length = 512)
-    private String main_image;
-
     @Column(name = "create_datetime")
     private Timestamp create_datetime;
 
@@ -41,26 +37,14 @@ public class Posts{
     private Integer state;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Members member;
+    @JoinColumn(name = "buyer")
+    private Members buyer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "creature_id")
-    private Animals animal;
+    @JoinColumn(name = "seller")
+    private Members seller;
 
-    @OneToMany(mappedBy = "post")
-    private List<Purchases> purchasesList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post")
-    private List<WishList> wishlistList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post")
-    private List<PostList> postlistList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post")
-    private List<Post_Images> post_imagesList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post")
-    private List<Notifications> notificationList = new ArrayList<>();
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nft_id")
+    private NFTs nft;
 }

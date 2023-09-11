@@ -5,24 +5,15 @@ import lombok.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Wallets {
+public class MyCollections {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "wallet_id")
-    private  Integer id;
-
-    @Column(name = "address", length = 100)
-    private  String address;
-
-    @Column(name = "balance")
-    private Integer balance;
+    @Column(name = "my_collection_id")
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Members member;
-
-
 }
