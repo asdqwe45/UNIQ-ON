@@ -3,28 +3,16 @@ package ssafy.uniqon.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import javax.xml.stream.events.Comment;
-import java.security.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Notifications {
-
+public class Purchases {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notification_id")
+    @Column(name = "purchase_id")
     private Integer id;
-
-    @Column(name  = "checked")
-    private Boolean checked;
-
-    @Column(name = "create_date")
-    private Timestamp create_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -33,5 +21,14 @@ public class Notifications {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Posts post;
+
+    public void setMember(Members member){
+        this.member = member;
+    }
+
+    public void setPost(Posts post){
+        this.post = post;
+    }
+
 
 }

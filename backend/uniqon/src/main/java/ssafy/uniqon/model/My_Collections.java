@@ -20,11 +20,10 @@ public class My_Collections {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member")
+    @JoinColumn(name = "member_id")
     private Members member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nft_id")
-    private NFTs nft;
-
+    @JoinColumn(name = "collection_id")
+    private Collections collection;
 }

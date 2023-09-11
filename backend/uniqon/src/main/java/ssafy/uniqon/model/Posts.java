@@ -41,14 +41,26 @@ public class Posts{
     private Integer state;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "buyer")
-    private Members buyer;
+    @JoinColumn(name = "member_id")
+    private Members member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller")
-    private Members seller;
+    @JoinColumn(name = "creature_id")
+    private Animals animal;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nft_id")
-    private NFTs nft;
+    @OneToMany(mappedBy = "post")
+    private List<Purchases> purchasesList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<WishList> wishlistList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<PostList> postlistList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Post_Images> post_imagesList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Notifications> notificationList = new ArrayList<>();
+
 }

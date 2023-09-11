@@ -3,25 +3,26 @@ package ssafy.uniqon.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.security.Timestamp;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class WishList {
+public class Wallets {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "wishlist_id")
-    private Integer id;
+    @Column(name = "wallet_id")
+    private  Integer id;
+
+    @Column(name = "address", length = 100)
+    private  String address;
+
+    @Column(name = "balance")
+    private Integer balance;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Members member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private  Posts post;
 
 }
