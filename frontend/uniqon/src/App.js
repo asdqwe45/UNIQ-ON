@@ -1,28 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
 import { Button } from "@material-tailwind/react";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Collections } from "./pages/Collections/Collections";
+import { Transaction } from "./pages/Transaction/Transaction";
+import { MyPage } from "./pages/Mypage/MyPage";
+import { Wishlist } from "./pages/Transaction/Wishlist";
+import { Landing } from "./pages/Landing/Landing";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <Button>Button</Button>;
-        <h1 className="text-3xl font-bold underline text-purple-300">
-      Hello world!
-    </h1>
-      </header>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/collections" element={<Collections />} />
+        <Route path="/transaction" element={<Transaction />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+      </Routes>
     </div>
   );
 }
