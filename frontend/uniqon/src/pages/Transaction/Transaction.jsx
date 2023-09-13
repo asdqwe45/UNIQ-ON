@@ -23,7 +23,15 @@ export function Transaction() {
   function registerSales() {
       
       axios
-        .post(URL + "/api/sales/register")
+        .post(URL + "/api/sales/register",
+        {
+          price: 1000,
+          content: "test",
+          title: "test",
+          species: "test",
+          creatureName: "test",
+        }
+        )
         .then((res) => {
           console.log(res.data)
         })
@@ -35,7 +43,11 @@ export function Transaction() {
   function updateSales() {
         
         axios
-          .put(URL + "/api/sales/update/1")
+          .put(URL + "/api/sales/update/1",
+          {
+            price: 1000,
+          }
+          )
           .then((res) => {
             console.log(res.data)
           })
