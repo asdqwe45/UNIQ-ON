@@ -28,8 +28,11 @@ public class Posts{
 
     @Column(name = "create_datetime")
     @CreationTimestamp
-    @UpdateTimestamp
     private Timestamp create_datetime;
+
+    @Column(name = "update_datetime")
+    @UpdateTimestamp
+    private Timestamp update_datetime;
 
     @Column(name = "title", length = 50)
     private String title;

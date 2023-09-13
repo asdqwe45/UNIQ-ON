@@ -3,6 +3,9 @@ package ssafy.uniqon.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,7 +39,6 @@ public class NFTs {
     @JoinColumn(name = "middle_classification_id")
     private MiddleClassifications middle;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "my_collection_id")
-    private MyCollections myCollection;
+    @OneToMany(mappedBy = "nfts")
+    private List<MyCollections> myCollection=new ArrayList<>();
 }

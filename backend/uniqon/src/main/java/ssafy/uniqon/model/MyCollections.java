@@ -16,4 +16,8 @@ public class MyCollections {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Members member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="nft_id")
+    private NFTs nfts;
 }
