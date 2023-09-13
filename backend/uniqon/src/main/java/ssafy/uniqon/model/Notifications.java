@@ -2,6 +2,8 @@ package ssafy.uniqon.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.xml.stream.events.Comment;
 import java.security.Timestamp;
@@ -21,7 +23,9 @@ public class Notifications {
     @Column(name  = "checked")
     private Boolean checked;
 
-    @Column(name = "create_date")
+    @Column(name = "create_datetime")
+    @CreationTimestamp
+    @UpdateTimestamp
     private Timestamp create_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
