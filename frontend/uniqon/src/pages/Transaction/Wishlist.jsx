@@ -28,7 +28,7 @@ export function Wishlist() {
   function getWishlist() {
       
       axios
-        .get(URL + "/api/wishlist/")
+        .get(URL + "/api/wishlist/0xF2a7423475C6240321732Ed5f9e29d94dAB603A9")
         .then((res) => {
           console.log(res.data)
         })
