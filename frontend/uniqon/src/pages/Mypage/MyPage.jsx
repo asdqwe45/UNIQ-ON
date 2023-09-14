@@ -5,86 +5,72 @@ import { Menu, MenuHandler, MenuList, MenuItem, Button } from '@material-tailwin
 export function MyPage() {
   const navigate = useNavigate();
 
-  function getuserInfo() {
-    const response = axios
-      .get(`http://localhost:8080/api/maypage/info/${1}`)
-      .then((resonse) => {
-        console.log(resonse);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  async function getuserInfo() {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/maypage/info/${1}`);
+      console.log('성공', response);
+    } catch (error) {
+      console.log('실패', error);
+    }
   }
 
-  function updateInfo() {
-    const data = {
-      password: 'string',
-      nickname: 'string',
-      profileImage: 'string'
-    };
-    const response = axios
-      .put(`http://localhost:8080/api/mypage/info`, data)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  async function updateInfo() {
+    try {
+      const data = {
+        password: 'string',
+        nickname: 'string',
+        profileImage: 'string'
+      };
+      const response = await axios.put(`http://localhost:8080/api/mypage/info`, data);
+      console.log('성공', response);
+    } catch (error) {
+      console.log('실패', error);
+    }
   }
 
-  function likeCollections() {
-    const response = axios
-      .post(`http://localhost:8080/api/mypage/nft/${1}`)
-      .then((resonse) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  async function likeCollections() {
+    try {
+      const response = await axios.post(`http://localhost:8080/api/mypage/nft/${1}`);
+      console.log('성공', response);
+    } catch (error) {
+      console.log('실패', error);
+    }
   }
 
-  function deleteCollections() {
-    const response = axios
-      .delete(`http://localhost:8080/api/mypage/nft/${1}`)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  async function deleteCollections() {
+    try {
+      const response = await axios.delete(`http://localhost:8080/api/mypage/nft/${1}`);
+      console.log('성공', response);
+    } catch (error) {
+      console.log('실패', error);
+    }
   }
 
-  function likeCollecList() {
-    const response = axios
-      .get(`http://localhost:8080/api/mypage/nft`)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  async function likeCollecList() {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/mypage/nft`);
+      console.log('성공', response);
+    } catch (error) {
+      console.log('실패', error);
+    }
   }
 
-  function purchaseList() {
-    const resonse = axios
-      .get(`http://localhost:8080/api/mypage/shoppingList`)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  async function purchaseList() {
+    try {
+      const resonse = await axios.get(`http://localhost:8080/api/mypage/shoppingList`);
+      console.log('성공', resonse);
+    } catch (error) {
+      console.log('실패', error);
+    }
   }
 
-  function salesList() {
-    const response = axios
-      .get(`http://localhost:8080/api/mypage/postList`)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  async function salesList() {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/mypage/postList`);
+      console.log('성공', response);
+    } catch (error) {
+      console.log('실패', error);
+    }
   }
 
   // 마켓플레이스(거래 목록 페이지)로 이동
@@ -98,7 +84,7 @@ export function MyPage() {
   };
 
   const createNFT = () => {
-    navigate('/createNFT');
+    navigate('/nft');
   };
 
   const goToMypage = () => {
@@ -513,7 +499,7 @@ export function MyPage() {
                     </div>
                   </button>
                   <button
-                    onclick={goToCollection}
+                    onClick={goToCollection}
                     className="inline-flex h-[36px] items-center justify-center pt-[9px] pb-[8px] px-[24.14px] relative flex-[0_0_auto] rounded-full all-[unset] box-border"
                   >
                     <div className="relative w-fit mt-[-1.00px] text-[#000000b2] [font-family:'Pretendard-SemiBold',_Helvetica] font-semibold text-[16px] text-center tracking-[0] leading-[normal] whitespace-nowrap">
