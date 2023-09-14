@@ -1,5 +1,6 @@
 package ssafy.uniqon.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import static ssafy.uniqon.global.response.Response.OK;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/myPage")
+@Tag(name = "마이페이지 API")
+@CrossOrigin("*")
 public class MyPageController {
 
     record ModifyMyProfileWebRequest(
