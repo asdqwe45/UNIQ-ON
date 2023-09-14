@@ -56,6 +56,17 @@ export function Landing() {
 
           위시리스트
         </Button>
+        <Button
+          className="text-4xl w-96 h-28"
+          onClick={() => {
+            navigate("/nft");
+
+          }}
+          color="blue"
+          >
+
+          NFT
+        </Button>
       </header>
       
     </div>
