@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export function Transaction() {
 
-  const URL = "http://localhost:8080"
+  // const URL = "http://localhost:8080"
 
   // function getSales() {
         
@@ -23,7 +23,7 @@ export function Transaction() {
   function registerSales() {
       
       axios
-        .post(URL + "/api/sales/register",
+        .post("/api/sales/register",
         {
           price: 1000,
           content: "test",
@@ -43,7 +43,7 @@ export function Transaction() {
   function updateSales() {
         
         axios
-          .put(URL + "/api/sales/update/1",
+          .put("/api/sales/update/1",
           {
             price: 1000,
           }
@@ -59,7 +59,7 @@ export function Transaction() {
   function deleteSales() {
         
         axios
-          .delete(URL + "/api/sales/delete/1")
+          .delete("/api/sales/delete/1")
           .then((res) => {
             console.log(res.data)
           })
@@ -71,7 +71,7 @@ export function Transaction() {
   function serachSales() {
         
         axios
-          .get(URL + "/api/sales/search/word=1")
+          .get("/api/sales/search/word=1")
           .then((res) => {
             console.log(res.data)
           })
@@ -83,7 +83,7 @@ export function Transaction() {
   function detailSales() {
           
           axios
-            .get(URL + "/api/sales/detail/1")
+            .get("/api/sales/detail/1")
             .then((res) => {
               console.log(res.data)
             })

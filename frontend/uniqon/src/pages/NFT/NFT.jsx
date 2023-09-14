@@ -4,7 +4,7 @@ import axios from "axios"
 export function NFT() {
 
     // nft 등록
-    async function addItem() {
+    async function nftAdd() {
         try {
         // 요청을 보낼 데이터
         const data = {
