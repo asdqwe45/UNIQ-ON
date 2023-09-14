@@ -7,7 +7,7 @@ export function MyPage() {
 
   async function getuserInfo() {
     try {
-      const response = await axios.get(`http://localhost:8080/api/maypage/info/${1}`);
+      const response = await axios.get(`/api/mayPage/info/${1}`);
       console.log('성공', response);
     } catch (error) {
       console.log('실패', error);
@@ -21,7 +21,7 @@ export function MyPage() {
         nickname: 'string',
         profileImage: 'string'
       };
-      const response = await axios.put(`http://localhost:8080/api/mypage/info`, data);
+      const response = await axios.put(`/api/mayPage/info`, data);
       console.log('성공', response);
     } catch (error) {
       console.log('실패', error);
@@ -30,7 +30,7 @@ export function MyPage() {
 
   async function likeCollections() {
     try {
-      const response = await axios.post(`http://localhost:8080/api/mypage/nft/${1}`);
+      const response = await axios.post(`/api/mayPage/nft/${1}`);
       console.log('성공', response);
     } catch (error) {
       console.log('실패', error);
@@ -39,7 +39,7 @@ export function MyPage() {
 
   async function deleteCollections() {
     try {
-      const response = await axios.delete(`http://localhost:8080/api/mypage/nft/${1}`);
+      const response = await axios.delete(`/api/mayPage/nft/${1}`);
       console.log('성공', response);
     } catch (error) {
       console.log('실패', error);
@@ -48,7 +48,7 @@ export function MyPage() {
 
   async function likeCollecList() {
     try {
-      const response = await axios.get(`http://localhost:8080/api/mypage/nft`);
+      const response = await axios.get(`/api/mayPage/nft`);
       console.log('성공', response);
     } catch (error) {
       console.log('실패', error);
@@ -57,7 +57,7 @@ export function MyPage() {
 
   async function purchaseList() {
     try {
-      const resonse = await axios.get(`http://localhost:8080/api/mypage/shoppingList`);
+      const resonse = await axios.get(`/api/mayPage/purchaseList`);
       console.log('성공', resonse);
     } catch (error) {
       console.log('실패', error);
@@ -66,7 +66,7 @@ export function MyPage() {
 
   async function salesList() {
     try {
-      const response = await axios.get(`http://localhost:8080/api/mypage/postList`);
+      const response = await axios.get(`/api/mayPage/salesList`);
       console.log('성공', response);
     } catch (error) {
       console.log('실패', error);
