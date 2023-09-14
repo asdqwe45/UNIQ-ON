@@ -20,6 +20,7 @@ import static ssafy.uniqon.global.response.Response.OK;
 @RequiredArgsConstructor
 @RequestMapping("/api/nfts")
 @Tag(name = "NFT API")
+@CrossOrigin("*")
 public class NFTsController {
     
     public record RegisterNFTWebRequest(

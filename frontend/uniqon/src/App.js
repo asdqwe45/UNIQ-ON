@@ -7,6 +7,7 @@ import { Transaction } from "./pages/Transaction/Transaction";
 import { MyPage } from "./pages/Mypage/MyPage";
 import { Wishlist } from "./pages/Transaction/Wishlist";
 import { Landing } from "./pages/Landing/Landing";
+import { NFT } from "./pages/NFT/NFT";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/transaction" element={<Transaction />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/nft" element={<NFT />} />
       </Routes>
     </div>
   );

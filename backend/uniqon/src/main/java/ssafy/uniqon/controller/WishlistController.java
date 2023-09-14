@@ -19,6 +19,7 @@ import static ssafy.uniqon.global.response.Response.OK;
 @RequiredArgsConstructor
 @RequestMapping("/api/wishlist")
 @Tag(name = "위시리스트 Api")
+@CrossOrigin("*")
 public class WishlistController {
 
     @Operation(summary = "위시리스트에 추가", description = "위시리스트에 판매글을 추가합니다.")
