@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export function Wishlist() {
 
-  const URL = "http://localhost:8080"
+  // const URL = "http://localhost:8080"
 
   // useEffect(() => {
   //   getDefaultWishlist();
@@ -28,7 +28,7 @@ export function Wishlist() {
   function getWishlist() {
       
       axios
-        .get(URL + "/api/wishlist/")
+        .get("/api/wishlist/0xF2a7423475C6240321732Ed5f9e29d94dAB603A9")
         .then((res) => {
           console.log(res.data)
         })
@@ -40,7 +40,7 @@ export function Wishlist() {
   function addWishlist() {
       
       axios
-        .post(URL + "/api/wishlist/add/1")
+        .post("/api/wishlist/add/1")
         .then((res) => {
           console.log(res.data)
         })
@@ -52,7 +52,7 @@ export function Wishlist() {
   function deleteWishlist() {
       
       axios
-        .delete(URL + "/api/wishlist/1")
+        .delete("/api/wishlist/1")
         .then((res) => {
           console.log(res.data)
         })
