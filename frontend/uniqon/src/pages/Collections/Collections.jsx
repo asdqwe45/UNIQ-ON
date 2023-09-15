@@ -2,7 +2,7 @@ import { Button } from "@material-tailwind/react";
 import axios from "axios"
 
 export function Collections() {
-  // gerrit test by cherry
+  // gerrit test2 by cherry
 
   // 도감 검색
   async function search() {
