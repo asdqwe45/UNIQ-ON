@@ -2,6 +2,7 @@ import { Button } from "@material-tailwind/react";
 import axios from "axios"
 
 export function Collections() {
+  // gerrit test by cherry
 
   // 도감 검색
   async function search() {
@@ -33,7 +34,7 @@ export function Collections() {
     }
   }
 
-  // 대분류 리스트 조회
+  // 대분류 리스트 조회??
   async function mainList() {
     try {
       const response = await axios.get("/api/collections/list/main")
