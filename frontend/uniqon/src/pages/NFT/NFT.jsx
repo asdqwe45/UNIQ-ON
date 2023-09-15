@@ -1,7 +1,9 @@
 import { Button } from "@material-tailwind/react";
 import axios from "axios"
+import { useRef } from "react";
 
 export function NFT() {
+  const nftImg = useRef(null)
 
     // nft 등록
     async function nftAdd() {
@@ -16,11 +18,16 @@ export function NFT() {
             "age": 0
         };
 
-        const response = await axios.post("api/nfts/register", data, {
+        const formData = new FormData()
+        formData.append("data", new Blob([JSON.stringify(data)], {type: "application/json"}))
+        formData.append("file", nftImg.current.files[0])
+
+        const response = await axios.post("api/nfts/register", formData, {
             headers: {
-            'Content-Type': 'application/json', 
+            'Content-Type': 'multipart/form-data',  
             },
-            file: "fileString",
+            // 파일 직접 넣기 
+            file: nftImg.current.files[0],
         });
 
         console.log("success: ", response);
@@ -28,6 +35,8 @@ export function NFT() {
         console.log("failed: ", e);
         }
     }
+
+  
 
     // nft 조회
     async function nftInfo() {
@@ -57,6 +66,7 @@ export function NFT() {
           Collections
         </p>
 
+      <span>
         {/* NFT 등록 버튼 */}
           <Button
             className="text-3xl w-70 h-30 m-5"
@@ -65,6 +75,12 @@ export function NFT() {
             >
             NFT 등록
           </Button>
+          <input 
+            type="file"
+            ref={nftImg}
+            
+            />
+        </span>
 
         {/* NFT 조회 버튼 */}
           <Button
