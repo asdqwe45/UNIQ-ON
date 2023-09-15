@@ -18,7 +18,7 @@ import static ssafy.uniqon.global.response.Response.OK;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/wishlist")
-@Tag(name = "위시리스트 Api")
+@Tag(name = "위시리스트 API")
 @CrossOrigin("*")
 public class WishlistController {
 
@@ -31,7 +31,7 @@ public class WishlistController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
-    @PostMapping("/{postId}")
+    @PostMapping("/add/{postId}")
     public Response<?> addWishlist(@PathVariable Integer postId){
         log.info("# 위시리스트에 추가할 포스트 식별자 : {}", postId);
         return OK(null);

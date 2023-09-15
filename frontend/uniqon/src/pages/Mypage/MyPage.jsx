@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Menu, MenuHandler, MenuList, MenuItem, Button } from '@material-tailwind/react';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Menu, MenuHandler, MenuList, MenuItem, Button } from "@material-tailwind/react";
 
 export function MyPage() {
   const navigate = useNavigate();
@@ -8,87 +8,87 @@ export function MyPage() {
   async function getuserInfo() {
     try {
       const response = await axios.get(`/api/myPage/info/${1}`);
-      console.log('성공', response);
+      console.log("성공", response);
     } catch (error) {
-      console.log('실패', error);
+      console.log("실패", error);
     }
   }
 
   async function updateInfo() {
     try {
       const data = {
-        password: 'string',
-        nickname: 'string',
-        profileImage: 'string'
+        password: "string",
+        nickname: "string",
+        profileImage: "string",
       };
       const response = await axios.put(`/api/myPage/info`, data);
-      console.log('성공', response);
+      console.log("성공", response);
     } catch (error) {
-      console.log('실패', error);
+      console.log("실패", error);
     }
   }
 
   async function likeCollections() {
     try {
       const response = await axios.post(`/api/myPage/nft/${1}`);
-      console.log('성공', response);
+      console.log("성공", response);
     } catch (error) {
-      console.log('실패', error);
+      console.log("실패", error);
     }
   }
 
   async function deleteCollections() {
     try {
       const response = await axios.delete(`/api/myPage/nft/${1}`);
-      console.log('성공', response);
+      console.log("성공", response);
     } catch (error) {
-      console.log('실패', error);
+      console.log("실패", error);
     }
   }
 
   async function likeCollecList() {
     try {
       const response = await axios.get(`/api/myPage/nft`);
-      console.log('성공', response);
+      console.log("성공", response);
     } catch (error) {
-      console.log('실패', error);
+      console.log("실패", error);
     }
   }
 
   async function purchaseList() {
     try {
       const resonse = await axios.get(`/api/myPage/purchaseList`);
-      console.log('성공', resonse);
+      console.log("성공", resonse);
     } catch (error) {
-      console.log('실패', error);
+      console.log("실패", error);
     }
   }
 
   async function salesList() {
     try {
       const response = await axios.get(`/api/myPage/salesList`);
-      console.log('성공', response);
+      console.log("성공", response);
     } catch (error) {
-      console.log('실패', error);
+      console.log("실패", error);
     }
   }
 
   // 마켓플레이스(거래 목록 페이지)로 이동
   const goToTransaction = () => {
-    navigate('/transaction');
+    navigate("/transaction");
   };
 
   // 도감 페이지로 이동
   const goToCollection = () => {
-    navigate('/collections');
+    navigate("/collections");
   };
 
   const createNFT = () => {
-    navigate('/nft');
+    navigate("/nft");
   };
 
   const goToMypage = () => {
-    navigate('/mypage');
+    navigate("/mypage");
   };
 
   return (
@@ -120,7 +120,7 @@ export function MyPage() {
           구매 목록
         </Button>
         <br></br>
-        <Button className="bg-purple-500" sonClick={salesList}>
+        <Button className="bg-purple-500" onClick={salesList}>
           판매 목록
         </Button>
         <br></br>
@@ -484,11 +484,7 @@ export function MyPage() {
             </div>
             <div className="flex max-w-[1600px] w-[1440px] min-h-[80px] items-center justify-between pl-[24px] pr-[24.01px] py-[16px] absolute top-[2px] left-0">
               <div className="relative flex-1 grow h-[36px]">
-                <img
-                  className="absolute w-[171px] h-[79px] top-[-22px] left-[4px] object-cover"
-                  src="logo.png"
-                  alt="Link foundation logo"
-                />
+                <img className="absolute w-[171px] h-[79px] top-[-22px] left-[4px] object-cover" src="logo.png" alt="Link foundation logo" />
                 <div className="inline-flex items-start justify-center left-[213px] absolute top-0">
                   <button
                     onClick={goToTransaction}
@@ -558,11 +554,7 @@ export function MyPage() {
                       <div className="absolute h-[19px] top-[13px] left-[56px] text-white [font-family:'Pretendard-SemiBold',_Helvetica] font-semibold text-[16px] text-center tracking-[0] leading-[normal] whitespace-nowrap">
                         마이페이지
                       </div>
-                      <img
-                        src="avatar.png"
-                        className="absolute w-[33px] h-[33px] top-[7px] left-[10px] object-cover"
-                        alt="Avatars avatar"
-                      />
+                      <img src="avatar.png" className="absolute w-[33px] h-[33px] top-[7px] left-[10px] object-cover" alt="Avatars avatar" />
                     </Button>
                   </MenuHandler>
                   <MenuList className="absolute top-0 left-0">

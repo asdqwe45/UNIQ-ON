@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ssafy.uniqon.global.response.Response;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import static ssafy.uniqon.global.response.Response.OK;
 
@@ -36,7 +37,7 @@ public class SalesController {
     }
 
     @PutMapping("/update/{postId}")
-    public Response<?> updatePost(@PathVariable int postId, @RequestBody Integer price){
+    public Response<?> updatePost(@PathVariable int postId, Map<String, Integer> price){
         return OK(null);
     }
 
