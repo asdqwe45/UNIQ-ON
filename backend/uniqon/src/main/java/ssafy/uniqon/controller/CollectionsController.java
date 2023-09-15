@@ -18,7 +18,7 @@ import static ssafy.uniqon.global.response.Response.OK;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/collections")
-@Tag(name = "Collections API")
+@Tag(name = "도감 API")
 @CrossOrigin("*")
 public class CollectionsController {
 
