@@ -20,76 +20,71 @@ export function Transaction() {
   //         });
   //     }
 
-  function registerSales() {
-      
-      axios
-        .post("/api/sales/register",
-        {
+  async function registerSales() {
+
+      try {
+        const data = {
           price: 1000,
           content: "test",
           title: "test",
           species: "test",
           creatureName: "test",
-        }
-        )
-        .then((res) => {
-          console.log(res.data)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        };
+
+        const res = await axios.post("/api/sales/register", data);
+        console.log(res.data)
+        
+      } catch (err) {
+        console.log(err);
+      }
     }
 
-  function updateSales() {
-        
-        axios
-          .put("/api/sales/update/1",
-          {
+  async function updateSales() {
+
+        try {
+        const data = {
             price: 1000,
-          }
-          )
-          .then((res) => {
+          };
+
+          const res = await axios.put("/api/sales/update/1", data);
             console.log(res.data)
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+
+        } catch(err) {
+          console.log(err)
+        }
       }
 
-  function deleteSales() {
-        
-        axios
-          .delete("/api/sales/delete/1")
-          .then((res) => {
+  async function deleteSales() {
+
+        try {
+          const res = await axios.delete("/api/sales/delete/1");
             console.log(res.data)
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+
+        } catch(err) {
+          console.log(err)
+        }
       }
 
-  function serachSales() {
-        
-        axios
-          .get("/api/sales/search/word=1")
-          .then((res) => {
+  async function serachSales() {
+
+        try {
+          const res = await axios.get("/api/sales/search/word=1");
             console.log(res.data)
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+
+        } catch(err) {
+          console.log(err)
+        }
       }
 
-  function detailSales() {
+  async function detailSales() {
           
-          axios
-            .get("/api/sales/detail/1")
-            .then((res) => {
+    try {
+            const res = await axios.get("/api/sales/detail/1");
               console.log(res.data)
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+
+          } catch(err) {
+            console.log(err)
+          }
         }
 
   
