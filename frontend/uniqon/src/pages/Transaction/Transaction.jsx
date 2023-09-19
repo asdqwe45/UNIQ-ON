@@ -8,6 +8,7 @@ import { SalesCard } from "../../components/Common/SalesCard";
 import { useEffect, useState } from "react";
 
 export function Transaction() {
+  const nftImg = React.useRef(null);
   
 
   const URL = "http://localhost:5000"
@@ -36,7 +37,17 @@ export function Transaction() {
           creatureName: "test",
         };
 
-        const res = await axios.post(URL + "/api/sales/register", data);
+        const formData = new FormData()
+        formData.append("data", new Blob([JSON.stringify(data)], {type: "application/json"}))
+        formData.append("file", nftImg.current.files[0])
+
+        const res = await axios.post(URL + "/api/sales/register", formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',  
+            },
+
+            file: nftImg.current.files[0],
+        });
         console.log(res.data)
         
       } catch (err) {
@@ -51,7 +62,16 @@ export function Transaction() {
             price: 1000,
           };
 
-          const res = await axios.put(URL + "/api/sales/update/1", data);
+          const formData = new FormData()
+          formData.append("data", new Blob([JSON.stringify(data)], {type: "application/json"}))
+          formData.append("file", nftImg.current.files[0])
+
+          const res = await axios.put(URL + "/api/sales/update/1", formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',  
+              },
+              file: nftImg.current.files[0],
+          });
             console.log(res.data)
 
         } catch(err) {
@@ -109,6 +129,8 @@ export function Transaction() {
           <br></br>
 
           <SalesCard />
+
+        <SalesCard />
 
         <Button color="teal" onClick={getSales}>판매글 조회</Button>
         <br></br>
