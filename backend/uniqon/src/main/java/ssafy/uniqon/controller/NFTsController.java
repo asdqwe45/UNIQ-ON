@@ -11,7 +11,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pinata.PinataException;
 import ssafy.uniqon.global.response.Response;
+import ssafy.uniqon.service.NFTCreateService;
+
+import java.io.IOException;
 
 import static ssafy.uniqon.global.response.Response.OK;
 
@@ -27,7 +31,7 @@ public class NFTsController {
             @Schema(description = "지갑 주소")
             String walletAddress,
             @Schema(description = "중분류")
-            Integer middleClassificationId,
+            String middleClassificationId,
             @Schema(description = "nft 주소")
             String nftAddress,
             @Schema(description = "이름")
@@ -38,6 +42,8 @@ public class NFTsController {
             Integer age
     ){}
 
+    private final NFTCreateService nftCreateService;
+
     @Operation(summary = "NFT 등록", description = "NFT를 등록합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -46,9 +52,10 @@ public class NFTsController {
     })
     @PostMapping("/register")
     public Response<?> registerNFT(@RequestPart(value = "data") RegisterNFTWebRequest req,
-                                   @RequestPart(value = "file") MultipartFile multipartFile){
+                                   @RequestPart(value = "file") MultipartFile multipartFile) throws Exception {
         log.debug("# NFT 등록시 데이터 : {}", req);
         log.debug("# NFT 등록시 이미지 : {}", multipartFile);
+        nftCreateService.createNFT(req);
         return OK(null);
     }
 

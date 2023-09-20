@@ -5,13 +5,10 @@ spring:
     group:
       local:
         - db-local
-        - log-local
       dev:
         - db-dev
-        - log-dev
     include:
       - db
-      - log
 
 logging:
   level:
