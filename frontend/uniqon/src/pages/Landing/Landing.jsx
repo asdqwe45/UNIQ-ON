@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import LoginButton from '../../components/Auth/LoginButton';
 
 export function Landing() {
 
@@ -12,6 +13,7 @@ export function Landing() {
         <p>
           여기는 랜딩페이지입니다.
         </p>
+        <LoginButton />
         <Button
           className="text-4xl w-96 h-28"
           onClick={() => {
