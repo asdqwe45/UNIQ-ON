@@ -1,7 +1,10 @@
 import React from 'react';
 import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import LoginButton from '../../components/Auth/LoginButton';
+import { Section1 } from '../../components/Landing/Section1';
+import { Section2 } from '../../components/Landing/Section2';
+import { Section3 } from '../../components/Landing/Section3';
+import { Section4 } from '../../components/Landing/Section4';
 
 export function Landing() {
 
@@ -10,6 +13,13 @@ export function Landing() {
   return (
     <div className="App">
       <header className="App-header">
+      <div className="flex flex-col w-[1440px] items-start relative">
+      <Section1 />
+      <Section2 />
+      <Section3 />
+      <Section4 />
+      </div>
+
         <p>
           여기는 랜딩페이지입니다.
         </p>

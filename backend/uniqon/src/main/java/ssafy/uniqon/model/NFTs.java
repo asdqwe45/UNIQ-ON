@@ -16,8 +16,12 @@ public class NFTs {
     @Column(name = "nft_id")
     private Integer id;
 
-    @Column(name = "nft_address", length = 200)
-    private String nft_address;
+    @Column(length = 200)
+    @Setter
+    private String owner;
+
+    @Column(name = "nft_tx_hash", length = 200)
+    private String nftTxHash;
 
     @Column(name = "image", length = 512)
     private String image;
@@ -41,4 +45,12 @@ public class NFTs {
 
     @OneToMany(mappedBy = "nfts")
     private List<MyCollections> myCollection=new ArrayList<>();
+
+    @Column(name="nft_URL",length = 200)
+    private String nftURL;
+
+    @Column(length = 200)
+    private String contractAddress;
+
+    private int tokenId;
 }
