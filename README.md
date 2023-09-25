@@ -22,8 +22,7 @@
 - revert: 이전 커밋 취소
 
 ## Branch strategy
-기본적으로 develop에서 분기
-Commit convention과 동일하게 디렉토리 세분화
-프론트엔드는 front- 명시
-백엔드는 back- 명시
-ex) feat/front-login , feat/back-login
+1. develop에서 주차별로 분기 ex) week1, week4
+2. 서비스 단위로 분기 ex) collection, sale, nft
+3. 프론트엔드는 front- 명시 백엔드는 back- 명시 세부 기능 단위로 분기 
+ex) front-login ,back-login

@@ -4,9 +4,13 @@ import { Button } from "@material-tailwind/react";
 import { useWishlistStore } from "../../stores/WishlistStore";
 import { TopNavBar } from "../../components/Common/TopNavBar";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function Wishlist() {
+
+  const [postId, setPostId] = React.useState('1');
+  const [wishId, setWishId] = React.useState('1');
+  const [walletAddress, setWalletAddress] = React.useState('0xF2a7423475C6240321732Ed5f9e29d94dAB603A9');
 
   const URL = "http://localhost:5000"
 
@@ -29,8 +33,10 @@ export function Wishlist() {
 
   async function getWishlist() {
 
+    
+
       try {
-        const res = await axios.get(URL + "/api/wishlist/0xF2a7423475C6240321732Ed5f9e29d94dAB603A9");
+        const res = await axios.get(URL + `/api/wishlist/${walletAddress}`);
           console.log(res.data)
 
       } catch(err) {
@@ -41,7 +47,7 @@ export function Wishlist() {
   async function addWishlist() {
       
     try {
-        const res = await axios.post("/api/wishlist/add/1");
+        const res = await axios.post(`/api/wishlist/add/${postId}`);
           console.log(res.data)
 
       } catch(err) {
@@ -52,7 +58,7 @@ export function Wishlist() {
   async function deleteWishlist() {
       
     try {
-        const res = await axios.delete("/api/wishlist/delete/1");
+        const res = await axios.delete(`/api/wishlist/${wishId}`);
           console.log(res.data)
 
       } catch(err) {

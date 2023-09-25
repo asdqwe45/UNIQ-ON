@@ -64,7 +64,7 @@ export function Collections() {
 
         {/* 도감 검색 버튼 */}
           <Button
-            className="text-3xl w-70 h-30 m-5"
+            className="m-5 text-3xl w-70 h-30"
             onClick={search}
             color="blue"
             >
@@ -73,7 +73,7 @@ export function Collections() {
 
         {/* NFT 리스트 조회 버튼 */}
           <Button
-            className="text-3xl w-70 h-30 m-5"
+            className="m-5 text-3xl w-70 h-30"
             onClick={nftList}
             color="blue"
             >
@@ -82,7 +82,7 @@ export function Collections() {
 
         {/* 중분류 리스트 조회 버튼 */}
           <Button
-            className="text-3xl w-70 h-30 m-5"
+            className="m-5 text-3xl w-70 h-30"
             onClick={middleList}
             color="blue"
             >
@@ -91,7 +91,7 @@ export function Collections() {
 
         {/* 대분류 조회 버튼 */}
           <Button
-            className="text-3xl w-70 h-30 m-5"
+            className="m-5 text-3xl w-70 h-30"
             onClick={mainList}
             color="blue"
             >
@@ -100,7 +100,7 @@ export function Collections() {
 
         {/* 중분류 조회 버튼 */}
           <Button
-            className="text-3xl w-70 h-30 m-5"
+            className="m-5 text-3xl w-70 h-30"
             onClick={middleInfo}
             color="blue"
             >

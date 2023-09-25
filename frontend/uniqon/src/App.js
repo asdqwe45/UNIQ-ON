@@ -4,6 +4,7 @@ import { Button } from '@material-tailwind/react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { Collections } from './pages/Collections/Collections';
 import { Transaction } from './pages/Transaction/Transaction';
+import { TranItemDetail } from './pages/Transaction/TranItemDetail';
 import { MyPage } from './pages/Mypage/MyPage';
 import { Wishlist } from './pages/Transaction/Wishlist';
 import { Landing } from './pages/Landing/Landing';
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         {/* <Route path="/collections" element={<Collections />} /> */}
         <Route path="/transaction" element={<Transaction />} />
+        <Route path="/transaction/tranItemDetail/:id" element={<TranItemDetail />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/nft" element={<NFT />} />

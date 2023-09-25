@@ -9,9 +9,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ssafy.uniqon.global.exception.NotFoundException;
 import ssafy.uniqon.global.response.Response;
+import ssafy.uniqon.repository.WishlistQueryRepository;
+import ssafy.uniqon.service.WishlistService;
 
+import static ssafy.uniqon.global.response.Response.ERROR;
 import static ssafy.uniqon.global.response.Response.OK;
 
 @Slf4j
@@ -21,6 +29,18 @@ import static ssafy.uniqon.global.response.Response.OK;
 @Tag(name = "위시리스트 API")
 @CrossOrigin("*")
 public class WishlistController {
+
+    public record addWishlistWebRequest(
+            String walletAddress,
+            int postId
+    ){}
+
+    public record deleteWishlistWebRequest(
+            String walletAddress,
+            int wishlistId
+    ){}
+
+    private final WishlistService wishlistService;
 
     @Operation(summary = "위시리스트에 추가", description = "위시리스트에 판매글을 추가합니다.")
     @Parameters({
@@ -33,8 +53,15 @@ public class WishlistController {
     })
     @PostMapping("/add/{postId}")
     public Response<?> addWishlist(@PathVariable Integer postId){
-        log.info("# 위시리스트에 추가할 포스트 식별자 : {}", postId);
-        return OK(null);
+        log.info("# 위시리스트에 추가 요청 : {}", postId);
+        int result = wishlistService.addWishlist(new addWishlistWebRequest("0x00000000000000", postId));
+        if (result == 1) {
+            log.debug("# 위시리스트 추가 성공");
+            return OK(null);
+        }else {
+            log.debug("# 위시리스트 추가 실패");
+            return ERROR("위시리스트 추가 실패", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Operation(summary = "위시리스트 조회", description = "지갑 주소를 통해 위시리스트 조회합니다.")
@@ -47,9 +74,15 @@ public class WishlistController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
     @GetMapping("/{walletAddress}")
-    public Response<?> getWishlist(@PathVariable String walletAddress){
-        log.info("# 위시리스트 조회할 지갑 주소 : {}", walletAddress);
-        return OK(null);
+    public Response<?> getWishlist(@PathVariable String walletAddress, @PageableDefault Pageable pageable){
+        log.debug("# 위시리스트 조회 요청 : {}", walletAddress);
+        Page<WishlistQueryRepository.getWishlistDBResponse> list =  wishlistService.getWishlist(pageable, walletAddress);
+        if (list == null) {
+            return ERROR("위시리스트 존재 안 함", HttpStatus.NOT_FOUND);
+        } else {
+            log.debug("# 위시리스트 : {}", list);
+            return OK(list);
+        }
     }
 
     @Operation(summary = "위시리스트에서 삭제", description = "위시리스트에서 판매글을 삭제합니다.")
@@ -63,7 +96,16 @@ public class WishlistController {
     })
     @DeleteMapping("/{wishlistId}")
     public Response<?> deleteWishlist(@PathVariable Integer wishlistId){
-        log.info("# 삭제할 위시리스트 식별자 : {}", wishlistId);
-        return OK(null);
+        log.info("# 위시리스트 삭제 요청 : {}", wishlistId);
+        int result = wishlistService.deleteWishlist(new deleteWishlistWebRequest("0x00000000000000", wishlistId));
+        if (result == 1) {
+            log.debug("# 위시리스트 삭제 성공");
+            return OK(null);
+
+        } else {
+            log.debug("# 위시리스트 삭제 실패");
+            return ERROR("위시리스트 삭제 실패", HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

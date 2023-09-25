@@ -35,7 +35,7 @@ export function TopNavBar() {
     
     <div className="flex max-w-[1600px] w-[1440px] min-h-[80px] items-center justify-between pl-[24px] pr-[24.01px] py-[16px] absolute top-[2px] left-0">
               <div className="relative flex-1 grow h-[36px]">
-                <img onClick={goToLanding} className="absolute w-[171px] h-[79px] top-[-22px] left-[4px] object-cover" src="logo.png" alt="Link foundation logo" />
+                <img onClick={goToLanding} className="absolute w-[171px] h-[79px] top-[-22px] left-[4px] object-cover" src="/logo.png" alt="Link foundation logo" />
                 <div className="inline-flex items-start justify-center left-[213px] absolute top-0">
                   <button
                     onClick={goToTransaction}
@@ -66,7 +66,7 @@ export function TopNavBar() {
                         </div>
                       </div>
                     </div>
-                    <img src="search.png" className="absolute w-[18px] h-[18px] top-[15px] left-[20px]" alt="Svg" />
+                    <img src="/search.png" className="absolute w-[18px] h-[18px] top-[15px] left-[20px]" alt="Svg" />
                   </div>
                 </div>
               </div>
@@ -79,7 +79,7 @@ export function TopNavBar() {
                     <div className="absolute h-[19px] top-[31px] left-[84px] [font-family:'Pretendard-SemiBold',_Helvetica] font-semibold text-black text-[16px] text-center tracking-[0] leading-[normal] whitespace-nowrap">
                       NFT 생성
                     </div>
-                    <img src="nftlogo.png" className="absolute w-[40px] h-[35px] top-6 left-9" alt="Video player" />
+                    <img src="/nftlogo.png" className="absolute w-[34px] h-[32px] top-7 left-10" alt="Video player" />
                     {/* <img className="absolute w-[112px] h-[94px] top-0 left-0" alt="Video player" /> */}
                   </div>
                 </button>
@@ -105,7 +105,7 @@ export function TopNavBar() {
                       <div className="absolute h-[19px] top-[13px] left-[56px] text-white [font-family:'Pretendard-SemiBold',_Helvetica] font-semibold text-[16px] text-center tracking-[0] leading-[normal] whitespace-nowrap">
                         마이페이지
                       </div>
-                      <img src="avatar.png" className="absolute w-[33px] h-[33px] top-[7px] left-[10px] object-cover" alt="Avatars avatar" />
+                      <img src="/avatar.png" className="absolute w-[33px] h-[33px] top-[7px] left-[10px] object-cover" alt="Avatars avatar" />
                     </Button>
                   </MenuHandler>
                   <MenuList className="absolute top-0 left-0">

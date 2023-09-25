@@ -5,6 +5,7 @@ import { Section1 } from '../../components/Landing/Section1';
 import { Section2 } from '../../components/Landing/Section2';
 import { Section3 } from '../../components/Landing/Section3';
 import { Section4 } from '../../components/Landing/Section4';
+import LoginButton from '../../components/Auth/LoginButton';
 
 export function Landing() {
 

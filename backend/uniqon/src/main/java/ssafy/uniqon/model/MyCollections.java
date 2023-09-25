@@ -2,6 +2,8 @@ package ssafy.uniqon.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -15,9 +17,11 @@ public class MyCollections {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Members member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="nft_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private NFTs nfts;
 }

@@ -12,7 +12,3 @@ spring:
     include:
       - db
       - log
-
-logging:
-  level:
-    org.hibernate.SQL: debug

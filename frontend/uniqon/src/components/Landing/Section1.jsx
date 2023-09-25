@@ -27,11 +27,11 @@ export function Section1() {
                 <div className="relative w-[292px] h-[56px] bg-[#438f8f] rounded-[10px] shadow-[0px_4px_4px_#00000040] backdrop-blur-sm backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(4px)_brightness(100%)]">
                   <div onClick={goToTransaction} className="relative w-[247px] h-[28px] top-[12px] left-[29px]">
                     <img
-                      className="absolute w-[18px] h-[21px] top-[6px] left-0"
+                      className="absolute w-[38px] h-[38px] top-0 left-0"
                       alt="Google play white"
-                      src="playstore.svg"
+                      src="book.gif"
                     />
-                    <div className="w-[243px] h-[28px] top-0 left-[4px] [font-family:'Segoe_UI-Bold',Helvetica] font-bold text-[#ffffff] text-[16px] text-center leading-[28px] absolute tracking-[0]">
+                    <div className="w-[243px] h-[28px] top-1 left-[4px] [font-family:'Segoe_UI-Bold',Helvetica] font-bold text-[#ffffff] text-[16px] text-center leading-[28px] absolute tracking-[0]">
                       서비스 시작하러 가기
                     </div>
                   </div>
@@ -40,7 +40,7 @@ export function Section1() {
               <div className="absolute w-[607px] h-[700px] top-[14px] left-[600px] bg-[#c1dcdc] rotate-[2.82deg]">
                 <img
                   className="absolute w-[608px] h-[755px] top-[9px] left-[-18px] rotate-[-2.82deg]"
-                  alt="Rebranded image top"
+                  alt="Rebranded top"
                   src="heedong.png"
                 />
               </div>
@@ -50,6 +50,7 @@ export function Section1() {
               <br />
               유니콘에서 희동이를 만나고 소유해보세요
             </p>
+            <img src="/snake.gif" alt="" />
           </div>
         </div>
       </div>

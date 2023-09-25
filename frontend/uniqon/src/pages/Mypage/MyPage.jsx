@@ -1,94 +1,127 @@
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Menu, MenuHandler, MenuList, MenuItem, Button } from "@material-tailwind/react";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Menu, MenuHandler, MenuList, MenuItem, Button } from '@material-tailwind/react';
+import { Tabs, TabsHeader, TabsBody, Tab, TabPanel } from '@material-tailwind/react';
+import { useState } from 'react';
+import { MyNft } from './MyNft';
+import { Purchase } from './Purchase';
+import { Sales } from './Sales';
+import { WishList } from './WishList';
 
 export function MyPage() {
   const navigate = useNavigate();
 
+  const [selectedTab, setSelectedTab] = useState('myNft');
+  const data = [
+    {
+      value: 'myNft',
+      label: '나의 NFT'
+    },
+    {
+      value: 'purchaseList',
+      label: '구매 내역'
+    },
+    {
+      value: 'salesList',
+      label: '판매 내역'
+    },
+    {
+      value: 'wishList',
+      label: '위시리스트'
+    }
+  ];
+
+  // 정보 조회
   async function getuserInfo() {
     try {
       const response = await axios.get(`/api/myPage/info/${1}`);
-      console.log("성공", response);
+      console.log('성공', response);
     } catch (error) {
-      console.log("실패", error);
+      console.log('실패', error);
     }
   }
 
+  // 정보 수정
   async function updateInfo() {
     try {
       const data = {
-        password: "string",
-        nickname: "string",
-        profileImage: "string",
+        password: 'string',
+        nickname: 'string',
+        profileImage: 'string'
       };
       const response = await axios.put(`/api/myPage/info`, data);
-      console.log("성공", response);
+      console.log('성공', response);
     } catch (error) {
-      console.log("실패", error);
+      console.log('실패', error);
     }
   }
 
-  async function likeCollections() {
+  // 도감 좋아요
+  async function collecLike() {
     try {
       const response = await axios.post(`/api/myPage/nft/${1}`);
-      console.log("성공", response);
+      console.log('성공', response);
     } catch (error) {
-      console.log("실패", error);
+      console.log('실패', error);
     }
   }
 
-  async function deleteCollections() {
+  // 도감 좋아요 삭제
+  async function collecDelete() {
     try {
       const response = await axios.delete(`/api/myPage/nft/${1}`);
-      console.log("성공", response);
+      console.log('성공', response);
     } catch (error) {
-      console.log("실패", error);
+      console.log('실패', error);
     }
   }
 
+  // 좋아요 한 도감 리스트
   async function likeCollecList() {
     try {
       const response = await axios.get(`/api/myPage/nft`);
-      console.log("성공", response);
+      console.log('성공', response);
     } catch (error) {
-      console.log("실패", error);
+      console.log('실패', error);
     }
   }
 
+  // 구매 내역
   async function purchaseList() {
     try {
       const resonse = await axios.get(`/api/myPage/purchaseList`);
-      console.log("성공", resonse);
+      console.log('성공', resonse);
     } catch (error) {
-      console.log("실패", error);
+      console.log('실패', error);
     }
   }
 
+  // 판매 내역
   async function salesList() {
     try {
       const response = await axios.get(`/api/myPage/salesList`);
-      console.log("성공", response);
+      console.log('성공', response);
     } catch (error) {
-      console.log("실패", error);
+      console.log('실패', error);
     }
   }
 
   // 마켓플레이스(거래 목록 페이지)로 이동
   const goToTransaction = () => {
-    navigate("/transaction");
+    navigate('/transaction');
   };
 
   // 도감 페이지로 이동
   const goToCollection = () => {
-    navigate("/collections");
+    navigate('/collections');
   };
 
   const createNFT = () => {
-    navigate("/nft");
+    navigate('/nft');
   };
 
   const goToMypage = () => {
-    navigate("/mypage");
+    navigate('/mypage');
   };
 
   return (
@@ -104,11 +137,11 @@ export function MyPage() {
           정보 수정
         </Button>
         <br></br>
-        <Button className="bg-yellow-600" onClick={likeCollections}>
+        <Button className="bg-yellow-600" onClick={collecLike}>
           좋아요 도감
         </Button>
         <br></br>
-        <Button className="bg-green-600" onClick={deleteCollections}>
+        <Button className="bg-green-600" onClick={collecDelete}>
           좋아요 도감 제거
         </Button>
         <br></br>
@@ -127,8 +160,8 @@ export function MyPage() {
 
         <div className="bg-white flex flex-row justify-center w-full">
           <div className="bg-white w-[1440px] h-[1024px] relative">
-            <div className="flex flex-col w-[1382px] h-[400px] items-start p-[24px] absolute top-[165px] left-[29px] rounded-[16px] overflow-hidden bg-cover bg-[50%_50%]">
-              <div className="w-[1382px] h-[400px] left-0 bg-[#0000008a] absolute top-0" />
+            {/* <div className="flex flex-col w-[1382px] h-[800px] items-start p-[24px] absolute top-[165px] left-[29px] rounded-[16px] overflow-hidden bg-cover bg-[50%_50%]">
+              <div className="w-[1382px] h-[800px] left-0 bg-[#0000008a] absolute top-0" />
               <div className="flex w-[1309px] items-start gap-[32px] relative flex-[0_0_auto] mb-[-8.00px]">
                 <div className="flex flex-col w-[217px] h-[357px] items-start justify-end gap-[24px] relative">
                   <div className="flex flex-col items-start justify-end pl-0 pr-[110.75px] pt-[249px] pb-0 relative self-stretch w-full flex-[0_0_auto] mt-[-107.00px]">
@@ -169,322 +202,80 @@ export function MyPage() {
                     </div>
                   </div>
                 </div>
-                <div className="flex w-[988px] items-start gap-[32px] relative">
-                  <div className="inline-flex flex-col min-w-[340px] items-start relative flex-[0_0_auto] bg-white rounded-[8px] overflow-hidden shadow-[0px_8px_40px_#0000000a,0px_2px_5px_#0000000d,0px_0px_2px_#00000026]">
-                    <div className="inline-flex flex-col h-[233px] items-start relative">
-                      <div className="inline-flex flex-col h-[278px] items-start relative mb-[-45.00px]">
-                        <img className="relative max-w-[340px] w-[340px] h-[233px]" alt="Nft png" />
-                      </div>
-                    </div>
-                    <div className="inline-flex flex-col items-start p-[20px] relative flex-[0_0_auto]">
-                      <div className="inline-flex items-start justify-around pl-0 pr-[166.86px] py-0 relative flex-[0_0_auto]">
-                        <div className="max-w-[133.14px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                          <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] bg-cover bg-[50%_50%]" />
-                          <div className="relative w-[107.14px] h-[17.5px]">
-                            <div className="absolute h-[18px] top-[-2px] left-0 [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#000000b2] text-[14px] tracking-[0] leading-[17.5px] whitespace-nowrap">
-                              @JeBread
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="absolute w-[340px] h-px top-0 left-0 bg-[#0000000d]" />
-                      <div className="inline-flex items-end justify-between pt-[16px] pb-0 px-0 relative flex-[0_0_auto]">
-                        <div className="inline-flex flex-col items-start gap-[2px] relative flex-[0_0_auto]">
-                          <div className="inline-flex flex-col items-start pl-0 pr-[40.53px] py-0 relative flex-[0_0_auto]">
-                            <div className="relative w-fit mt-[-1.00px] [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[14px] tracking-[0] leading-[normal]">
-                              Last sold
-                            </div>
-                          </div>
-                          <div className="relative w-fit [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[20px] tracking-[0] leading-[normal]">
-                            0.273 ETH
-                          </div>
-                        </div>
-                        <div className="inline-flex items-start justify-around pr-[7.63e-06px] pl-[106.52px] py-px relative flex-[0_0_auto]">
-                          <div className="max-w-[96.95px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                            <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] bg-cover bg-[50%_50%]" />
-                            <div className="relative w-[70.95px] h-[17.5px]">
-                              <div className="absolute h-[18px] top-[-2px] left-0 [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#000000b2] text-[14px] tracking-[0] leading-[17.5px] whitespace-nowrap">
-                                @MJRoark
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="inline-flex flex-col min-w-[340px] items-start relative flex-[0_0_auto] bg-white rounded-[8px] overflow-hidden shadow-[0px_8px_40px_#0000000a,0px_2px_5px_#0000000d,0px_0px_2px_#00000026]">
-                    <div className="inline-flex flex-col items-start relative flex-[0_0_auto]">
-                      <div className="inline-flex flex-col h-[235px] items-start relative">
-                        <img className="h-[235px] relative max-w-[340px] w-[340px]" alt="Nft png" />
-                      </div>
-                    </div>
-                    <div className="inline-flex flex-col items-start p-[20px] relative flex-[0_0_auto]">
-                      <div className="inline-flex items-start justify-around pl-0 pr-[166.86px] py-0 relative flex-[0_0_auto]">
-                        <div className="max-w-[133.14px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                          <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] bg-cover bg-[50%_50%]" />
-                          <div className="relative w-[107.14px] h-[17.5px]">
-                            <div className="absolute h-[18px] top-[-2px] left-0 [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#000000b2] text-[14px] tracking-[0] leading-[17.5px] whitespace-nowrap">
-                              @JeBread
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="inline-flex items-end justify-between pt-[16px] pb-0 px-0 relative flex-[0_0_auto]">
-                        <div className="inline-flex flex-col items-start gap-[2px] relative flex-[0_0_auto]">
-                          <div className="pl-0 pr-[30.81px] py-0 inline-flex flex-col items-start relative flex-[0_0_auto]">
-                            <div className="relative w-fit mt-[-1.00px] [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[14px] tracking-[0] leading-[normal]">
-                              Last sold
-                            </div>
-                          </div>
-                          <div className="relative w-fit [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[20px] tracking-[0] leading-[normal]">
-                            0.40 ETH
-                          </div>
-                        </div>
-                        <div className="inline-flex items-start justify-around pl-[94.8px] pr-0 py-px relative flex-[0_0_auto]">
-                          <div className="max-w-[118.39px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                            <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] [background:linear-gradient(180deg,_rgb(253,_34,_173)_0%,_rgb(237,_86,_85)_100%)]" />
-                            <div className="inline-flex flex-col items-start pl-0 pr-[13.39px] py-0 relative flex-[0_0_auto]">
-                              <div className="relative w-fit mt-[-1.00px] [font-family:'Consolas-Regular',_Helvetica] font-normal text-[#000000b2] text-[13px] tracking-[0] leading-[16.2px] whitespace-nowrap">
-                                0xAE06…3d2F
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="absolute w-[340px] h-px top-0 left-0 bg-[#0000000d]" />
-                    </div>
-                  </div>
-                  <div className="inline-flex flex-col min-w-[340px] items-start relative flex-[0_0_auto] mr-[-96.00px] bg-white rounded-[8px] overflow-hidden shadow-[0px_8px_40px_#0000000a,0px_2px_5px_#0000000d,0px_0px_2px_#00000026]">
-                    <div className="inline-flex flex-col items-start relative flex-[0_0_auto]">
-                      <div className="inline-flex flex-col h-[236px] items-start relative">
-                        <img className="h-[236px] relative max-w-[340px] w-[340px]" alt="Nft png" />
-                      </div>
-                      <div className="top-[236px] absolute w-[340px] h-px left-0 bg-[#0000000d]" />
-                    </div>
-                    <div className="inline-flex flex-col items-start p-[20px] relative flex-[0_0_auto]">
-                      <div className="inline-flex items-start justify-around pl-0 pr-[166.86px] py-0 relative flex-[0_0_auto]">
-                        <div className="max-w-[133.14px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                          <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] bg-cover bg-[50%_50%]" />
-                          <div className="relative w-[107.14px] h-[17.5px]">
-                            <div className="absolute h-[18px] top-[-2px] left-0 [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#000000b2] text-[14px] tracking-[0] leading-[17.5px] whitespace-nowrap">
-                              @JeBread
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="inline-flex items-end justify-between pt-[16px] pb-0 px-0 relative flex-[0_0_auto]">
-                        <div className="inline-flex flex-col items-start gap-[2px] relative flex-[0_0_auto]">
-                          <div className="pl-0 pr-[42.25px] py-0 inline-flex flex-col items-start relative flex-[0_0_auto]">
-                            <div className="relative w-fit mt-[-1.00px] [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[14px] tracking-[0] leading-[normal]">
-                              Last sold
-                            </div>
-                          </div>
-                          <div className="relative w-fit [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[20px] tracking-[0] leading-[normal]">
-                            0.555 ETH
-                          </div>
-                        </div>
-                        <div className="inline-flex items-start justify-around pl-[83.36px] pr-0 py-px relative flex-[0_0_auto]">
-                          <div className="max-w-[118.39px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                            <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] [background:linear-gradient(180deg,_rgb(84,_188,_251)_0%,_rgb(67,_66,_243)_100%)]" />
-                            <div className="inline-flex flex-col items-start pl-0 pr-[13.39px] py-0 relative flex-[0_0_auto]">
-                              <div className="relative w-fit mt-[-1.00px] [font-family:'Consolas-Regular',_Helvetica] font-normal text-[#000000b2] text-[13px] tracking-[0] leading-[16.2px] whitespace-nowrap">
-                                0x131C…a65E
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {currentPage === 'myNft' && <MyNft></MyNft>}
+
+                {currentPage === 'purchaseList' && <Purchase></Purchase>}
+
+                {currentPage === 'salesList' && <Sales></Sales>}
+
+                {currentPage === 'wishList' && <WishList></WishList>}
               </div>
+            </div> */}
+
+            <div className="mt-36">
+              <Tabs value={selectedTab}>
+                <TabsHeader>
+                  {data.map(({ label, value }) => (
+                    <Tab key={value} value={value} onClick={() => setSelectedTab(value)}>
+                      {label}
+                    </Tab>
+                  ))}
+                </TabsHeader>
+                <TabsBody>
+                  <TabPanel value="myNft">
+                    <MyNft></MyNft>
+                  </TabPanel>
+                  <TabPanel value="purchaseList">
+                    <Purchase></Purchase>
+                  </TabPanel>
+                  <TabPanel value="salesList">
+                    <Sales></Sales>
+                  </TabPanel>
+                  <TabPanel value="wishList">
+                    <WishList></WishList>
+                  </TabPanel>
+                </TabsBody>
+              </Tabs>
             </div>
-            <div className="flex flex-col w-[1382px] h-[400px] items-start p-[24px] absolute top-[565px] left-[29px] rounded-[16px] overflow-hidden bg-cover bg-[50%_50%]">
-              <div className="w-[1382px] h-[400px] left-0 bg-[#0000008a] absolute top-0" />
-              <div className="flex w-[1309px] items-start gap-[32px] relative flex-[0_0_auto] mb-[-8.00px]">
-                <div className="flex flex-col w-[217px] h-[357px] items-start justify-end gap-[24px] relative">
-                  <div className="flex flex-col items-start justify-end pl-0 pr-[110.75px] pt-[249px] pb-0 relative self-stretch w-full flex-[0_0_auto] mt-[-107.00px]">
-                    <div className="relative flex-[0_0_auto]" />
-                    <div className="inline-flex flex-col items-start gap-[8px] relative flex-[0_0_auto] mr-[-65.00px]">
-                      <div className="relative max-w-[720px] flex-[0_0_auto]" />
-                      <div className="inline-flex items-center pl-0 pr-[167.91px] py-0 relative flex-[0_0_auto]">
-                        <div className="relative flex-[0_0_auto]" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="relative self-stretch w-full flex-[0_0_auto]" />
-                </div>
-                <div className="flex w-[988px] items-start gap-[32px] relative">
-                  <div className="inline-flex flex-col min-w-[340px] items-start relative flex-[0_0_auto] bg-white rounded-[8px] overflow-hidden shadow-[0px_8px_40px_#0000000a,0px_2px_5px_#0000000d,0px_0px_2px_#00000026]">
-                    <div className="inline-flex flex-col h-[233px] items-start relative">
-                      <div className="inline-flex flex-col h-[278px] items-start relative mb-[-45.00px] overflow-hidden">
-                        <div className="inline-flex flex-col items-start relative flex-[0_0_auto]">
-                          <div className="inline-flex flex-col items-start relative flex-[0_0_auto]">
-                            <img className="relative max-w-[340px] w-[340px] h-[233px]" alt="Nft png" />
-                          </div>
-                          <div className="top-[339px] absolute w-[340px] h-px left-0 bg-[#0000000d]" />
-                        </div>
-                        <div className="relative max-w-[340px] w-[340px] h-[233px]" />
-                      </div>
-                    </div>
-                    <div className="inline-flex flex-col items-start p-[20px] relative flex-[0_0_auto]">
-                      <div className="inline-flex items-start justify-around pl-0 pr-[166.86px] py-0 relative flex-[0_0_auto]">
-                        <div className="max-w-[133.14px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                          <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] bg-cover bg-[50%_50%]" />
-                          <div className="relative w-[107.14px] h-[17.5px]">
-                            <div className="absolute h-[18px] top-[-2px] left-0 [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#000000b2] text-[14px] tracking-[0] leading-[17.5px] whitespace-nowrap">
-                              @JeBread
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="absolute w-[340px] h-px top-0 left-0 bg-[#0000000d]" />
-                      <div className="inline-flex items-end justify-between pt-[16px] pb-0 px-0 relative flex-[0_0_auto]">
-                        <div className="inline-flex flex-col items-start gap-[2px] relative flex-[0_0_auto]">
-                          <div className="inline-flex flex-col items-start pl-0 pr-[40.53px] py-0 relative flex-[0_0_auto]">
-                            <div className="relative w-fit mt-[-1.00px] [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[14px] tracking-[0] leading-[normal]">
-                              Last sold
-                            </div>
-                          </div>
-                          <div className="relative w-fit [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[20px] tracking-[0] leading-[normal]">
-                            0.63 ETH
-                          </div>
-                        </div>
-                        <div className="inline-flex items-start justify-around pr-[7.63e-06px] pl-[106.52px] py-px relative flex-[0_0_auto]">
-                          <div className="max-w-[96.95px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                            <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] bg-cover bg-[50%_50%]" />
-                            <div className="relative w-[70.95px] h-[17.5px]">
-                              <div className="absolute h-[18px] top-[-2px] left-0 [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#000000b2] text-[14px] tracking-[0] leading-[17.5px] whitespace-nowrap">
-                                @MJRoark
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="inline-flex flex-col min-w-[340px] items-start relative flex-[0_0_auto] bg-white rounded-[8px] overflow-hidden shadow-[0px_8px_40px_#0000000a,0px_2px_5px_#0000000d,0px_0px_2px_#00000026]">
-                    <div className="inline-flex flex-col items-start relative flex-[0_0_auto]">
-                      <div className="inline-flex flex-col h-[235px] items-start relative overflow-hidden">
-                        <div className="flex flex-col w-[340px] items-start relative flex-[0_0_auto]">
-                          <div className="inline-flex flex-col items-start relative flex-[0_0_auto]">
-                            <img className="h-[235px] relative max-w-[340px] w-[340px]" alt="Nft png" />
-                          </div>
-                          <div className="top-[339px] absolute w-[340px] h-px left-0 bg-[#0000000d]" />
-                        </div>
-                        <div className="h-[340px] relative max-w-[340px] w-[340px]" />
-                      </div>
-                    </div>
-                    <div className="inline-flex flex-col items-start p-[20px] relative flex-[0_0_auto]">
-                      <div className="inline-flex items-start justify-around pl-0 pr-[166.86px] py-0 relative flex-[0_0_auto]">
-                        <div className="max-w-[133.14px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                          <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] bg-cover bg-[50%_50%]" />
-                          <div className="relative w-[107.14px] h-[17.5px]">
-                            <div className="absolute h-[18px] top-[-2px] left-0 [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#000000b2] text-[14px] tracking-[0] leading-[17.5px] whitespace-nowrap">
-                              @JeBread
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="inline-flex items-end justify-between pt-[16px] pb-0 px-0 relative flex-[0_0_auto]">
-                        <div className="inline-flex flex-col items-start gap-[2px] relative flex-[0_0_auto]">
-                          <div className="pl-0 pr-[30.81px] py-0 inline-flex flex-col items-start relative flex-[0_0_auto]">
-                            <div className="relative w-fit mt-[-1.00px] [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[14px] tracking-[0] leading-[normal]">
-                              Last sold
-                            </div>
-                          </div>
-                          <div className="relative w-fit [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[20px] tracking-[0] leading-[normal]">
-                            0.33 ETH
-                          </div>
-                        </div>
-                        <div className="inline-flex items-start justify-around pl-[94.8px] pr-0 py-px relative flex-[0_0_auto]">
-                          <div className="max-w-[118.39px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                            <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] [background:linear-gradient(180deg,_rgb(253,_34,_173)_0%,_rgb(237,_86,_85)_100%)]" />
-                            <div className="inline-flex flex-col items-start pl-0 pr-[13.39px] py-0 relative flex-[0_0_auto]">
-                              <div className="relative w-fit mt-[-1.00px] [font-family:'Consolas-Regular',_Helvetica] font-normal text-[#000000b2] text-[13px] tracking-[0] leading-[16.2px] whitespace-nowrap">
-                                0xAE06…3d2F
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="absolute w-[340px] h-px top-0 left-0 bg-[#0000000d]" />
-                    </div>
-                  </div>
-                  <div className="inline-flex flex-col min-w-[340px] items-start relative flex-[0_0_auto] mr-[-96.00px] bg-white rounded-[8px] overflow-hidden shadow-[0px_8px_40px_#0000000a,0px_2px_5px_#0000000d,0px_0px_2px_#00000026]">
-                    <div className="inline-flex flex-col items-start relative flex-[0_0_auto]">
-                      <div className="inline-flex flex-col h-[236px] items-start relative overflow-hidden">
-                        <div className="inline-flex flex-col items-start relative flex-[0_0_auto]">
-                          <div className="inline-flex flex-col items-start relative flex-[0_0_auto]">
-                            <img className="h-[236px] relative max-w-[340px] w-[340px]" alt="Nft png" />
-                          </div>
-                          <div className="top-[339px] absolute w-[340px] h-px left-0 bg-[#0000000d]" />
-                        </div>
-                        <div className="h-[340px] relative max-w-[340px] w-[340px]" />
-                      </div>
-                      <div className="top-[236px] absolute w-[340px] h-px left-0 bg-[#0000000d]" />
-                    </div>
-                    <div className="inline-flex flex-col items-start p-[20px] relative flex-[0_0_auto]">
-                      <div className="inline-flex items-start justify-around pl-0 pr-[166.86px] py-0 relative flex-[0_0_auto]">
-                        <div className="max-w-[133.14px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                          <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] bg-cover bg-[50%_50%]" />
-                          <div className="relative w-[107.14px] h-[17.5px]">
-                            <div className="absolute h-[18px] top-[-2px] left-0 [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#000000b2] text-[14px] tracking-[0] leading-[17.5px] whitespace-nowrap">
-                              @JeBread
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="inline-flex items-end justify-between pt-[16px] pb-0 px-0 relative flex-[0_0_auto]">
-                        <div className="inline-flex flex-col items-start gap-[2px] relative flex-[0_0_auto]">
-                          <div className="pl-0 pr-[42.25px] py-0 inline-flex flex-col items-start relative flex-[0_0_auto]">
-                            <div className="relative w-fit mt-[-1.00px] [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[14px] tracking-[0] leading-[normal]">
-                              Last sold
-                            </div>
-                          </div>
-                          <div className="relative w-fit [font-family:'Segoe_UI-Semibold',_Helvetica] font-normal text-[#00000099] text-[20px] tracking-[0] leading-[normal]">
-                            0.15 ETH
-                          </div>
-                        </div>
-                        <div className="inline-flex items-start justify-around pl-[83.36px] pr-0 py-px relative flex-[0_0_auto]">
-                          <div className="max-w-[118.39px] items-center gap-[6px] inline-flex relative flex-[0_0_auto]">
-                            <div className="relative w-[20px] h-[20px] rounded-full shadow-[inset_0px_0px_0px_1px_#0000000d] [background:linear-gradient(180deg,_rgb(84,_188,_251)_0%,_rgb(67,_66,_243)_100%)]" />
-                            <div className="inline-flex flex-col items-start pl-0 pr-[13.39px] py-0 relative flex-[0_0_auto]">
-                              <div className="relative w-fit mt-[-1.00px] [font-family:'Consolas-Regular',_Helvetica] font-normal text-[#000000b2] text-[13px] tracking-[0] leading-[16.2px] whitespace-nowrap">
-                                0x131C…a65E
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="absolute w-[327px] h-[29px] top-[109px] left-[29px]">
+            {/* <div className="absolute w-[327px] h-[29px] top-[109px] left-[29px]">
               <div className="inline-flex items-center gap-[16px] absolute top-0 left-0 shadow-[0px_4px_4px_#00000040]">
                 <div className="inline-flex items-center justify-center gap-[10px] px-[12px] py-[6px] relative flex-[0_0_auto] bg-[#353945] rounded-[100px]">
-                  <button className="relative w-fit mt-[-1.00px] [font-family:'Pretendard-Bold',_Helvetica] font-bold text-[#fbfcfc] text-[14px] tracking-[0] leading-[16px] whitespace-nowrap">
+                  <button
+                    onClick={() => setCurrentPage('myNft')}
+                    className="relative w-fit mt-[-1.00px] [font-family:'Pretendard-Bold',_Helvetica] font-bold text-[#fbfcfc] text-[14px] tracking-[0] leading-[16px] whitespace-nowrap"
+                  >
                     나의 NFT
                   </button>
                 </div>
               </div>
               <div className="flex w-[245px] items-center justify-center gap-[20px] px-[12px] py-[6px] absolute top-px left-[82px] rounded-[100px]">
-                <button className="relative w-fit mt-[-1.00px] [font-family:'Pretendard-Bold',_Helvetica] font-bold text-[#777e90] text-[14px] tracking-[0] leading-[16px] whitespace-nowrap">
+                <button
+                  onClick={() => setCurrentPage('purchaseList')}
+                  className="relative w-fit mt-[-1.00px] [font-family:'Pretendard-Bold',_Helvetica] font-bold text-[#777e90] text-[14px] tracking-[0] leading-[16px] whitespace-nowrap"
+                >
                   구매 이력
                 </button>
-                <button className="relative w-fit mt-[-1.00px] [font-family:'Pretendard-Bold',_Helvetica] font-bold text-[#777e90] text-[14px] tracking-[0] leading-[16px] whitespace-nowrap">
+                <button
+                  onClick={() => setCurrentPage('salesList')}
+                  className="relative w-fit mt-[-1.00px] [font-family:'Pretendard-Bold',_Helvetica] font-bold text-[#777e90] text-[14px] tracking-[0] leading-[16px] whitespace-nowrap"
+                >
                   판매 이력
                 </button>
-                <button className="relative w-fit mt-[-1.00px] [font-family:'Pretendard-Bold',_Helvetica] font-bold text-[#777e90] text-[14px] tracking-[0] leading-[16px] whitespace-nowrap">
+                <button
+                  onClick={() => setCurrentPage('wishList')}
+                  className="relative w-fit mt-[-1.00px] [font-family:'Pretendard-Bold',_Helvetica] font-bold text-[#777e90] text-[14px] tracking-[0] leading-[16px] whitespace-nowrap"
+                >
                   위시리스트
                 </button>
               </div>
-            </div>
+            </div> */}
             <div className="flex max-w-[1600px] w-[1440px] min-h-[80px] items-center justify-between pl-[24px] pr-[24.01px] py-[16px] absolute top-[2px] left-0">
               <div className="relative flex-1 grow h-[36px]">
-                <img className="absolute w-[171px] h-[79px] top-[-22px] left-[4px] object-cover" src="logo.png" alt="Link foundation logo" />
+                <img
+                  className="absolute w-[171px] h-[79px] top-[-22px] left-[4px] object-cover"
+                  src="logo.png"
+                  alt="Link foundation logo"
+                />
                 <div className="inline-flex items-start justify-center left-[213px] absolute top-0">
                   <button
                     onClick={goToTransaction}
@@ -532,19 +323,6 @@ export function MyPage() {
                     {/* <img className="absolute w-[112px] h-[94px] top-0 left-0" alt="Video player" /> */}
                   </div>
                 </button>
-                {/* <button
-                  onClick={goToMypage}
-                  className="absolute w-[154px] h-[48px] top-0 left-[310px] bg-black rounded-full shadow-[0px_4px_4px_#00000040] all-[unset] box-border"
-                >
-                  <div className="absolute h-[19px] top-[13px] left-[56px] text-white [font-family:'Pretendard-SemiBold',_Helvetica] font-semibold text-[16px] text-center tracking-[0] leading-[normal] whitespace-nowrap">
-                    마이페이지
-                  </div>
-                  <img
-                    src="avatar.png"
-                    className="absolute w-[33px] h-[33px] top-[7px] left-[10px] object-cover"
-                    alt="Avatars avatar"
-                  />
-                </button> */}
                 <Menu>
                   <MenuHandler>
                     <Button
@@ -554,7 +332,11 @@ export function MyPage() {
                       <div className="absolute h-[19px] top-[13px] left-[56px] text-white [font-family:'Pretendard-SemiBold',_Helvetica] font-semibold text-[16px] text-center tracking-[0] leading-[normal] whitespace-nowrap">
                         마이페이지
                       </div>
-                      <img src="avatar.png" className="absolute w-[33px] h-[33px] top-[7px] left-[10px] object-cover" alt="Avatars avatar" />
+                      <img
+                        src="avatar.png"
+                        className="absolute w-[33px] h-[33px] top-[7px] left-[10px] object-cover"
+                        alt="Avatars avatar"
+                      />
                     </Button>
                   </MenuHandler>
                   <MenuList className="absolute top-0 left-0">

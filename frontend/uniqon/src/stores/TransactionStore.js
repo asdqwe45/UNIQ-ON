@@ -2,10 +2,14 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 let transactionStore = (set) => ({
-  transaction: [],
-  setTransaction: (payload) => set({ transaction: payload }),
+  salesItemsList: [],
+  forDetailItem: "",
+  isWishList: 0,
+  setSalesItemsList: (payload) => set({ salesItemsList: payload }),
+  setForDetailItem: (payload) => set({ forDetailItem: payload }),
+  setIsWishList: (payload) => set({ isWishList: payload }),
 });
 
-transactionStore = persist(transactionStore, { name: "transaction" });
+transactionStore = persist(transactionStore, { name: "transaction_store" });
 
 export const useTransactionStore = create(transactionStore);

@@ -1,0 +1,45 @@
+# 공통 설정
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+--- # local 설정
+spring:
+  config:
+    activate:
+      on-profile: "db-local"
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/diti?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: 1234
+  sql:
+    init:
+      encoding: utf-8
+
+--- # dev 설정
+spring:
+  config:
+    activate:
+      on-profile: "db-dev"
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: false
+        show_sql: false
+  datasource:
+    url: tesfd
+    username: admin
+    password: admin
