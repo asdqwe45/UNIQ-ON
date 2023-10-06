@@ -64,8 +64,8 @@ public class TransactionHistoriesQueryRepository {
         QMembers members2=new QMembers("m2");
         List<MyPageController.TransactionHistoryWebResponse> list=jpaQueryFactory
                 .select(Projections.constructor(MyPageController.TransactionHistoryWebResponse.class,
-                        members1.nickname,
                         members2.nickname,
+                        members1.nickname,
                         transactionHistories.txHash,
                         transactionHistories.transactedAt,
                         nFTs.id,

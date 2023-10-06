@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 
+import static ssafy.uniqon.global.response.Response.ERROR;
 import static ssafy.uniqon.global.response.Response.OK;
 
 @Slf4j
@@ -92,8 +94,14 @@ private final PostDeleteService postDeleteService;
     public Response<?> registerPost(@RequestPart(value = "data") RegisterPostWebRequest req,
                                     @AuthenticationPrincipal UserDetails user) {
         log.debug("# 판매글 등록시 데이터 : {}", req);
-        postCreateService.createPost(req,user);
-        return OK("success");
+        int result = postCreateService.createPost(req,user);
+        if (result == 1) {
+            log.debug("# 판매글 추가 성공");
+            return OK(null);
+        } else {
+            log.debug("# 판매글 추가 실패");
+            return ERROR("판매글 추가 실패", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Operation(summary="판매글 수정", description = "판매글을 수정합니다.")
@@ -104,7 +112,7 @@ private final PostDeleteService postDeleteService;
     })
     @PutMapping("/update/{postId}")
     public Response<?> updatePost(@PathVariable Integer postId,
-                                  @RequestBody UpdatePostWebRequest req,
+                                  @RequestPart(value="data") UpdatePostWebRequest req,
                                   @AuthenticationPrincipal UserDetails user){
         log.debug("# 판매글 수정 데이터 : {}",req);
         postUpdateService.updatePost(postId,req,user);
@@ -189,7 +197,14 @@ private final PostDeleteService postDeleteService;
     @GetMapping("/post")
     public Response<?> getAllPostList(@PageableDefault(size=9) Pageable pageable,@AuthenticationPrincipal UserDetails user){
         log.debug("# 판매글 리스트 표시");
-        List<postListsWebResponse> postlist = postReadService.getPostAll(pageable,user.getUsername());
+        List<postListsWebResponse> postlist;
+        if(user!=null) {
+             postlist= postReadService.getPostAll(pageable, user.getUsername());
+
+        }
+        else{
+            postlist = postReadService.getPostAll(pageable, "");
+        }
         return OK(postlist);
     }
 }

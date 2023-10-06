@@ -1,12 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import useUserInfoStore from "../../stores/UserInfoStore";
 
 
 export function Section1() {
   const navigate = useNavigate();
+  const { accessToken } = useUserInfoStore();
 
-  function goToTransaction() {
-    navigate("/transaction");
+  function goToForLogin() {
+      navigate("/forlogin");
   }
 
   return (
@@ -24,8 +26,8 @@ export function Section1() {
                 </div>
               </div>
               <div className="flex w-[1024px] items-center gap-[12.78px] pl-0 pr-[651.22px] py-0 absolute top-[494px] left-0">
-                <div className="relative w-[292px] h-[56px] bg-[#438f8f] rounded-[10px] shadow-[0px_4px_4px_#00000040] backdrop-blur-sm backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(4px)_brightness(100%)]">
-                  <div onClick={goToTransaction} className="relative w-[247px] h-[28px] top-[12px] left-[29px]">
+                <div className="relative w-[292px] h-[56px] bg-gradient-to-r from-green-300 to-[#438fff] rounded-[10px] shadow-[0px_4px_4px_#00000040] backdrop-blur-sm backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(4px)_brightness(100%)]">
+                  <div onClick={goToForLogin} className="relative w-[247px] h-[28px] top-[12px] left-[29px]">
                     <img
                       className="absolute w-[38px] h-[38px] top-0 left-0"
                       alt="Google play white"

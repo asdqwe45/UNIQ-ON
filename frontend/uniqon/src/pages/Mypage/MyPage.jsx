@@ -6,6 +6,8 @@ import {
   MenuList,
   MenuItem,
   Button,
+  List,
+Dialog, Typography, Card, CardBody, CardFooter, CardHeader
 } from "@material-tailwind/react";
 import {
   Tabs,
@@ -26,6 +28,9 @@ export function MyPage() {
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("myNft");
   const [userInfo, setUserInfo] = useState();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => { setOpen(!open); };
+
   const data = [
     {
       value: "myNft",
@@ -132,17 +137,37 @@ export function MyPage() {
             </div> */}
 
           <div className="mt-36">
-            {userInfo && (
-              <div>
-                <strong>회원 정보</strong>
-                <li>지갑 주소 : {userInfo.walletAddress}</li>
-                <li>이름 : {userInfo.name}</li>
-                <li>닉네임 : {userInfo.nickname}</li>
-                <li>성별 : {userInfo.gender}</li>
-                <li>생년월일 : {userInfo.birth}</li>
-                <li>프로필 이미지 : {userInfo.profileImage}</li>
-              </div>
-            )}
+            {/* <div className="text-right mb-3">
+              <Button onClick={handleOpen}>내 정보</Button>
+            </div> */}
+
+          <Dialog
+          size="sm"
+          open={open}
+          handler={handleOpen}
+          className="bg-transparent shadow-none"
+          >
+            <Card className="mx-auto w-full max-w-[48rem]">
+              <CardHeader
+                variant="gradient"
+                color="green"
+                className="grid mb-4 h-28 place-items-center"
+              >
+                <Typography variant="h3" color="white">
+                  내 정보
+                </Typography>
+              </CardHeader>
+
+                <CardBody className="grid grid-cols-3 gap-4">  
+
+                </CardBody>
+              
+              <CardFooter className="pt-0">
+                <Button variant="gradient" onClick={() => {handleOpen();}} fullWidth>닫기</Button>
+              </CardFooter>
+            </Card>
+          </Dialog>
+            
             <Tabs value={selectedTab}>
               <TabsHeader>
                 {data.map(({ label, value }) => (

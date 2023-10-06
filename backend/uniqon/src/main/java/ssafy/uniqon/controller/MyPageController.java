@@ -75,11 +75,10 @@ public class MyPageController {
         return OK(memberService.getUserInfo(userDetails.getUsername()));
     }
 
-    @PutMapping("/info")
-    Response<?> modifyMyProfile(@RequestPart(value = "data") ModifyMyProfileWebRequest req,
-                                @RequestPart(value = "file")MultipartFile multipartFile, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
+    @PutMapping("/info/{nickname}")
+    Response<?> modifyMyProfile(@PathVariable String nickname, @AuthenticationPrincipal UserDetails userDetails) {
         log.debug("# 회원정보 수정 요청 회원 : {}", userDetails.getUsername());
-        int result = memberService.modifyUserInfo(userDetails.getUsername(), multipartFile, req);
+        int result = memberService.modifyUserInfo(userDetails.getUsername(), nickname);
         if (result == 1){
             log.debug("# 정상적으로 회원정보가 수정되었습니다!");
             return OK(null);

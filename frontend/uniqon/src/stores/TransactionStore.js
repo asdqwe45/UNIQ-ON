@@ -13,6 +13,9 @@ let transactionStore = (set) => ({
   tokenId: "",
   price: "",
 
+  nftList: [],
+  setNftList: (payload) => set({ nftList: payload }),
+
   setSellerAddress: (payload) => set({ sellerAddress: payload }),
   setTokenId: (payload) => set({ tokenId: payload }),
   setPrice: (payload) => set({ price: payload }),

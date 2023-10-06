@@ -6,4 +6,5 @@ import ssafy.uniqon.model.MyCollections;
 
 @Repository
 public interface MyCollectionsRepository extends JpaRepository<MyCollections,Integer> {
+    MyCollections findByNfts_Id (int nftId);
 }

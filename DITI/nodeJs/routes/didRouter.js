@@ -10,13 +10,14 @@ import { verifyLoginMessage } from "../src/auth.js";
 import { readImage } from "../src/ocr.js";
 import { createVC, createVP } from "../src/did.js";
 import axios from "axios";
-import e from "express";
+import jsonwebtoken from "jsonwebtoken"
 
 // 테스트 코드
 // router.get("/test", (req, res) => {
 //     res.send("hello")
 // })
 
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 // /vc 경로로 post 요청이 왔을 때의 로직
 // https://inpa.tistory.com/entry/EXPRESS-%F0%9F%93%9A-multer-%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4
 router.post("/vc", upload.single("imgFile"), async (req, res) => {
@@ -105,6 +106,7 @@ router.post("/vc", upload.single("imgFile"), async (req, res) => {
   res.send(vcJwt);
 });
 
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 // VP 발급
 router.get("/vp/:walletAddress/:type", async (req, res) => {
   const walletAddress = req.params.walletAddress;
@@ -139,5 +141,50 @@ router.get("/vp/:walletAddress/:type", async (req, res) => {
     return;
   }
 });
+
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+// vc 갱신
+router.put('/vc', async (req, res) => {
+  const walletAddress = req.headers.walletaddress
+  const type = req.body.type
+
+  console.log("VC갱신 요청 from " + walletAddress + " for type " + type)
+
+  let vcJwt = ""
+  try {
+      const response = await axios.get(process.env.SPRING_SERVER_URI + "/diti/vc/" + walletAddress + "/" + type)
+      if (response?.data?.response?.vcJwt) {
+          vcJwt = response.data.response.vcJwt
+          console.log("response.data.response.vcJwt:", vcJwt)
+      } else {
+          throw new Error("no vcJwt")
+      }
+  } catch (e) {
+      console.log("GET /diti/vc failed")
+      if (e.response)
+          res.status(e.response.status).send(e.response.data)
+  }
+  let vcPayload = jsonwebtoken.decode(vcJwt)?.vc?.credentialSubject?.data
+  vcJwt = await createVC(walletAddress, vcPayload)
+  try {
+      const response = await axios.put(process.env.SPRING_SERVER_URI + "/diti/vc",
+          {
+              walletAddress: walletAddress,
+              type: type,
+              vcJwt: vcJwt,
+          },
+          {
+              headers: {
+                  'Content-Type': 'application/json',
+              }
+          })
+  } catch (e) {
+      // console.log(e)
+      console.log("PUT /diti/vc failed")
+      res.status(e.response.status).send(e.response.data)
+      return
+  }
+  res.send(vcJwt)
+})
 
 export default router;

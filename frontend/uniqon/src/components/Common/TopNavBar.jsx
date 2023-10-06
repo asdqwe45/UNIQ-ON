@@ -8,25 +8,32 @@ import {
   MenuList,
   MenuItem,
   Button,
-  Badge
+  Badge,
+  List,
+  Input,
+Dialog, Typography, Card, CardBody, CardFooter, CardHeader
 } from "@material-tailwind/react";
+import useUserInfoStore from "../../stores/UserInfoStore";
 
 export function TopNavBar() {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
-  // const notifications = [
-  //   { id: 1, content: "멍뭉이 NFT의 거래가 완료 되었습니다." },
-  //   { id: 2, content: "거래완료2" },
-  //   { id: 3, content: "거래완료3" }
-  // ];
+  const [userInfo, setUserInfo] = useState();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => { setOpen(!open); };
+  const [isEditingNickname, setIsEditingNickname] = useState(false);
+  const [newNickname, setNewNickname] = useState("");
+  const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
+  const { accessToken, walletAddress } = useUserInfoStore();
+  
 
   const goToLanding = () => {
-    navigate("/");
-  };
-
-  const goToWishlist = () => {
-    navigate("/wishlist");
+    if (accessToken) {
+      navigate("/transaction");
+    } else {
+      navigate("/");
+    }
   };
   // 마켓플레이스(거래 목록 페이지)로 이동
   const goToTransaction = () => {
@@ -46,6 +53,70 @@ export function TopNavBar() {
     navigate("/mypage");
   };
 
+  const goLogout = () => {
+    const url = window.location.href;
+    const nowUrl = url.split(":")[1];
+    useUserInfoStore.getState().clearUserInfo();
+    if (nowUrl === "//localhost") {
+      window.location.href = "http://localhost:5001/api/users/logout";
+    } else {
+      window.location.href = "https://j9c201.p.ssafy.io/api/users/logout";
+    }
+    alert("로그아웃 되었습니다!");
+  };
+
+  const handleNicknameEdit = () => {
+    setIsEditingNickname(true);
+  };
+
+  const handleNicknameCancel = () => {
+    setNewNickname(userInfo.nickname);
+    setIsEditingNickname(false);
+  }
+
+  const handleNicknameChange = async (e) => {
+    // console.log(newNickname);
+    // if (e.target.value.length < 3) {
+    //   alert("3글자 이상 입력해주세요");
+    //   return;
+    // }
+    setNewNickname(e.target.value);
+    if (newNickname !== e.target.value) {
+      try {
+        const response = await axios.get(`/api/users/duplicate/${e.target.value}`)
+        if (response.status === 200 && response.data.success) {
+          setIsNicknameAvailable(true);
+        } else {
+          setIsNicknameAvailable(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleNicknameSave = async () => {
+    try {
+      const response1 = await axios.get(`/api/users/duplicate/${newNickname}`)
+      console.log(response1);
+      if (response1.status === 200 && response1.data.success) {
+        const response2 = await axios.put(`/api/myPage/info/${newNickname}`);
+        console.log(response2);
+        if (response2.status === 200) {
+          alert("닉네임 변경이 완료되었습니다!");
+        }
+      } else {
+        return;
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
+    
+    setUserInfo({ ...userInfo, nickname: newNickname });
+    setIsEditingNickname(false);
+  };
+
   const getNotifications = async () => {
     try {
       const response = await axios.get("/api/notifications", {
@@ -56,9 +127,40 @@ export function TopNavBar() {
       });
       console.log("알림 가져오기 성공", response);
       setNotifications(response.data.response.content);
+      
     } catch (error) {
       console.log("알림 가져오기 실패", error);
     }
+  };
+
+  const getMyInfo = async () => {
+    try {
+      const response = await axios.get(`/api/myPage/info`);
+      if (response.status === 200) {
+        setUserInfo(response.data.response);
+        setNewNickname(response.data.response.nickname);
+      } else {
+        console.log(response);
+      }
+    } catch (error) {
+      console.log("실패", error);
+    }
+  };
+
+    const deleteNotification =  async(notification) => {
+    const notificationId = notification.notificationId;
+    try {
+      const response = await axios.delete(`/api/notifications/${notificationId}`);
+      if (response.status === 200 && response.data.success) {
+        console.log("알림 삭제 완료", response);
+      } else {
+        console.log("알림 삭제 실패!", response);
+      }
+      } catch (error) {
+      console.log("알림 삭제 실패", error);
+      };
+      getNotifications();
+      
   };
 
   useEffect(() => {
@@ -68,18 +170,6 @@ export function TopNavBar() {
   const handleShowNotifications = () => {
     setShowNotifications(!showNotifications);
   };
-
-  // const deleteNotification = async (notification) => {
-  //   const notificationId = notification.id;
-  //   try {
-  //     const response = await axios.delete(
-  //       `/api/notifications/${notificationId}`
-  //     );
-  //     console.log("알림 삭제 완료", response);
-  //   } catch (error) {
-  //     console.log("알림 삭제 실패", error);
-  //   }
-  // };
 
   return (
     <>
@@ -112,7 +202,7 @@ export function TopNavBar() {
           </div>
         </div>
         <div className="flex items-center justify-center pl-[8.65px] pr-[8.68px] py-0 relative flex-1 grow">
-          <div className="relative w-[500px] h-[48px] ml-[-26.67px] mr-[-26.67px]">
+          <div className="relative w-[400px] h-[48px] ml-[-26.67px] mr-[-26.67px]">
             <div className="relative h-[48px] rounded-full">
               {/* <div className="flex w-[500px] min-h-[48px] items-center pl-[48px] pr-[32px] py-px absolute top-0 left-0 bg-[#0000000d] rounded-full overflow-hidden">
                 <div className="inline-flex flex-col items-start pl-0 pr-[330px] py-0 relative flex-[0_0_auto]">
@@ -121,68 +211,7 @@ export function TopNavBar() {
             </div>
           </div>
         </div>
-        <div className="relative">
-          <Badge content={notifications.length}>
-            <Button
-              onClick={() => {
-                getNotifications();
-                handleShowNotifications();
-              }}
-            >
-              <svg
-                className="w-6 h-6 text-gray-800 dark:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 14 20"
-              >
-                <path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z" />
-              </svg>
-            </Button>
-          </Badge>
-          {showNotifications && (
-            <div
-              className="absolute top-[48px] left-[2px] bg-white p-4 rounded-lg shadow-md z-10"
-              style={{
-                width: "500px",
-                maxWidth: "500px"
-              }}
-            >
-              <ul style={{ color: "black" }}>
-                {notifications.map((notification, index) => (
-                  <li key={index} style={{ fontSize: "15px" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginLeft: "5px"
-                      }}
-                    >
-                      <TiMediaRecord
-                        style={{ marginRight: "0.5rem", fontSize: "15px" }}
-                      ></TiMediaRecord>
-                      등록하신 "{notification.postTitle}" 판매 글의 NFT가 판매
-                      되었습니다.
-                      {/* {notification.content} */}
-                    </div>
-
-                    {/* <Button
-                      onClick={deleteNotification(notification)}
-                      variant="outlined"
-                      color="red"
-                      // className="mt-4 text-blue-500 hover:underline"
-                    >
-                      삭제
-                    </Button> */}
-                    {index !== notifications.length - 1 && (
-                      <hr className="border-t border-gray-300 my-2"></hr>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+        
         <div className="w-[50px] h-[48px] relative flex-1 grow">
           <div className="flex">
             <button
@@ -215,13 +244,141 @@ export function TopNavBar() {
                 </Button>
               </MenuHandler>
               <MenuList className="absolute top-0 left-0">
+                <MenuItem onClick={() => { handleOpen(); getMyInfo();}}>내 정보</MenuItem>
                 <MenuItem onClick={goToMypage}>마이페이지</MenuItem>
-                <MenuItem>Connect Wallet</MenuItem>
-                <MenuItem onClick={goToWishlist}>위시리스트</MenuItem>
-                <MenuItem>로그아웃</MenuItem>
+                <MenuItem onClick={goLogout}>로그아웃</MenuItem>
               </MenuList>
             </Menu>
           </div>
+        </div>
+
+        <Dialog
+          size="sm"
+          open={open}
+          handler={handleOpen}
+          className="bg-transparent shadow-none"
+          >
+            <Card className="mx-auto w-full max-w-[48rem]">
+              <CardHeader
+                variant="gradient"
+                color="yellow"
+                className="grid mb-4 h-28 place-items-center"
+              >
+                <Typography variant="h3" color="black">
+                  내 정보
+                </Typography>
+              </CardHeader>
+
+                <CardBody className="grid grid-cols-3 gap-4">  
+                  {userInfo && (
+                    <div>
+                      <List><strong>지갑 주소 : </strong>{userInfo.walletAddress}</List>
+                      <List><strong>이름 : </strong>{userInfo.name}</List>
+                      <List><strong>닉네임 : </strong>{isEditingNickname ? (
+                    <div>
+                    <Input
+                      type="text"
+                      // value={userInfo.nickname}
+                      value={newNickname}
+                      onChange={handleNicknameChange}
+                      // placeholder={userInfo.niname}
+                    />
+                    {isNicknameAvailable ? (
+                      <strong className="text-green-500">사용 가능한 닉네임입니다.</strong>
+                    ) : (
+                      <strong className="text-red-500">이미 사용 중인 닉네임입니다.</strong>
+                    )}
+                    </div>
+                  ) : (
+                    userInfo.nickname
+                  )}
+                    {isEditingNickname ? (
+                      <div>
+                        <Button onClick={handleNicknameSave}>변경 완료</Button>
+                        <Button onClick={handleNicknameCancel}>취소</Button>
+                      </div>
+                    ) : (
+                      <Button onClick={handleNicknameEdit}>닉네임 변경하기</Button>
+                    )}</List>
+                      <List><strong>성별 : </strong>{userInfo.gender}</List>
+                      <List><strong>생년월일 : </strong>{userInfo.birth}</List>
+                      {/* <List><strong>프로필 이미지 : </strong>{userInfo.profileImage}</List> */}
+                    </div>
+                  )}
+
+                </CardBody>
+              
+              <CardFooter className="pt-0">
+                <Button variant="gradient" onClick={() => {handleOpen();}} fullWidth>닫기</Button>
+              </CardFooter>
+            </Card>
+          </Dialog>
+
+        <div id="알림버튼" className="relative top-[2px] ml-[70px] left-[30px]">
+          <Badge content={notifications.length}>
+            <Button
+              onClick={() => {
+                getNotifications();
+                handleShowNotifications();
+              }}
+            >
+              <svg
+                className="w-6 h-6 text-gray-800 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 14 20"
+              >
+                <path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z" />
+              </svg>
+            </Button>
+          </Badge>
+          {showNotifications && (
+            <div
+              className="absolute top-[48px] left-[-430px] bg-white p-4 rounded-lg shadow-md z-10"
+              style={{
+                width: "500px",
+                maxWidth: "500px",
+              }}
+            >
+              <ul style={{ color: "black" }}>
+                {notifications.length === 0 ? (
+                  <li style={{ fontSize: "15px" }}>알림이 없어용~</li>
+                ) : (
+                  notifications.map((notification, index) => (
+                    <li key={index} style={{ fontSize: "15px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginLeft: "5px"
+                        }}
+                      >
+                        <TiMediaRecord
+                          style={{ marginRight: "0.5rem", fontSize: "15px" }}
+                        ></TiMediaRecord>
+                        등록하신 "{notification.postTitle}" 판매 글의 NFT가 판매
+                        되었습니다.
+                        {/* {notification.content} */}
+                      <p
+                        onClick={() => { deleteNotification(notification); } }
+                        variant="outlined"
+                        color="red"
+                        className="ml-4 text-red-500 hover:underline cursor-pointer"
+                      >
+                        삭제
+                      </p>
+                      </div>
+
+                      {index !== notifications.length - 1 && (
+                        <hr className="border-t border-gray-300 my-2"></hr>
+                      )}
+                    </li>
+                  ))
+                )}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </>

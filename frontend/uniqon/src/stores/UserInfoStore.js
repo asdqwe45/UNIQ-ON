@@ -13,6 +13,9 @@ const useUserInfoStore = create(persist((set) => ({
   setAccessToken: (payload) => {
     set({ accessToken: payload })
   },
+  clearUserInfo: () => {
+    set({ walletAddress: null, accessToken: null });
+  }
 }), { name: "user_info" }));
 
 

@@ -70,7 +70,13 @@ export function MetaMask() {
       console.error("MetaMask is not installed")
       // 메타마스크 설치 메세지 및 홈페이지 이동 
       alert('MetaMask를 설치해주세요');
-      window.location.href = 'https://metamask.io/';
+      // window.location.href = 'https://metamask.io/';
+      const newTab = window.open('https://metamask.io/', '_blank');
+      if (newTab) {
+        newTab.focus();
+      } else {
+        alert('팝업 차단이 활성화되어 새 탭을 열 수 없습니다.');
+      }
       return
     }
     console.log("MetaMask exists")

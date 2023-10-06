@@ -1,42 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-  Tooltip,
-  IconButton,
-  Badge
-} from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import { useCollectionsStore } from "../../stores/CollectionsStore";
 import { useEffect, useState } from "react";
-import { Pagination } from "./Pagination";
 import { TopNavBar } from "../../components/Common/TopNavBar";
 
 export function MainCollections() {
   const navigate = useNavigate();
   const {
-    mainCollecId,
     setMainCollecId,
-    mainCollecType,
     setMainCollecType,
-    mainCollecImg,
-    setMainCollecImg
+    setMainCollecImg,
+    mainType,
+    setMainType
   } = useCollectionsStore();
 
   const [mainCardsData, setMainCardsData] = useState([]);
-
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [pageSize] = useState(8); // 한 페이지에 보여줄 아이템 개수
-  // const handlePageChange = (page) => {
-  //   setCurrentPage(page);
-  // };
-
-  // console.log("현재 페이지", currentPage);
-  // console.log("카드 데이터", mainCardsData);
 
   useEffect(() => {
     async function mainList() {
@@ -50,16 +29,14 @@ export function MainCollections() {
         console.log("success", response);
 
         setMainCardsData(response.data.response.content);
+        setMainType(response.data.response.content.map((item) => item.type));
+        console.log("mainType", mainType);
       } catch (e) {
         console.log("failed", e);
       }
     }
     mainList();
   }, []);
-
-  // const startIndex = (currentPage - 1) * pageSize;
-  // const endIndex = startIndex + pageSize;
-  // const currentPageData = mainCardsData.slice(startIndex, endIndex);
 
   const goToMiddle = () => {
     navigate("/midcollections");
@@ -72,8 +49,6 @@ export function MainCollections() {
             <TopNavBar></TopNavBar>
 
             <br></br>
-            {/* /// */}
-            {/* <div className="flex mt-64 -mx-4 flex-wrap"> */}
             <div className="flex mt-60 -mx-4 flex-wrap h-[52px]">
               {mainCardsData.map((card, index) => (
                 <div key={index} className="w-1/4 mb-[430px] px-4 relative">
@@ -103,10 +78,13 @@ export function MainCollections() {
                     <footer className="flex justify-center">
                       <Button
                         variant="filled"
-                        // color="teal"
-                        // className="w-28 bg-[#80B6AB] -mt-4 justify-center flex items-baseline gap-2 rounded-lg px-4 py-2.5 text-xl font-bold text-white hover:bg-[#FF7308]"
-                        // className="w-28 bg-[#7FD1AE] -mt-4 justify-center flex items-baseline gap-2 rounded-lg px-4 py-2.5 text-xl font-bold text-white hover:bg-[#FF7308]"
                         className="w-28 bg-[#00A990] -mt-4 justify-center flex items-baseline gap-2 rounded-lg px-4 py-2.5 text-xl font-bold text-white hover:bg-[#80B6AB]"
+                        onClick={() => {
+                          setMainCollecId(card.id);
+                          setMainCollecType(card.type);
+                          setMainCollecImg(card.image);
+                          goToMiddle();
+                        }}
                       >
                         {card.type}
                       </Button>
@@ -115,139 +93,6 @@ export function MainCollections() {
                 </div>
               ))}
             </div>
-
-            {/* /// */}
-            {/* <div className="flex -mx-4 flex-wrap">
-              {currentPageData.map((card, index) => (
-                <div key={index} className="w-1/4 h-1/4 px-4 mb-8 ">
-                  <div className=" space-y-6 rounded-2xl bg-gray-100 p-6 transition duration-300 hover:rotate-6">
-                    <div className="flex justify-end">
-                      <div className="h-4 w-4 rounded-full bg-gray-900"></div>
-                    </div>
-
-
-                    <div
-                      onClick={() => {
-                        setMainCollecId(card.id);
-                        setMainCollecType(card.type);
-                        setMainCollecImg(card.image);
-                        goToMiddle();
-                      }}
-                      className="flex justify-center "
-                    >
-                      <img
-                        src={card.image}
-                        alt="ui/ux review check"
-                        className="h-64 aspect-square"
-                      />
-                    </div>
-
-                    <footer className="mb-10 flex justify-center">
-                      <button className="flex w-28 justify-center gap-2 rounded-lg bg-[#FE5401] px-4 py-2.5  text-xl font-bold text-white hover:bg-[#FF7308]">
-                          
-                      </button>
-                    </footer>
-                  </div>
-                </div>
-              ))} */}
-
-            {/* {currentPageData.map((card, index) => (
-                <div
-                  className="w-full sm:w-1/2 md:w-1/4 lg:w-1/4, xl:w-1/4 mb-4"
-                  key={index}
-                >
-                  <Card
-                    onClick={() => {
-                      setMainCollecId(card.id);
-                      setMainCollecType(card.type);
-                      setMainCollecImg(card.image);
-                      goToMiddle();
-                    }}
-                    key={index}
-                    className="max-w-xs md:max-w-sm lg:max-w-full mx-auto shadow-lg"
-                    style={{ margin: "0.5rem" }}
-                  >
-                    <CardHeader
-                      floated={false}
-                      color="white"
-                      className="h-72 flex items-center"
-                    >
-                      <img src={card.image} alt="ui/ux review check" />
-                      <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
-                      <IconButton
-                        size="sm"
-                        color="red"
-                        variant="text"
-                        className="!absolute top-4 right-4 rounded-full"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="h-6 w-6"
-                        >
-                          <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-                        </svg>
-                      </IconButton>
-                    </CardHeader>
-                    <CardFooter className="pt-5">
-                      <Button
-                        onClick={() => {
-                          setMainCollecId(card.id);
-                          setMainCollecType(card.type);
-                          setMainCollecImg(card.image);
-                          goToMiddle();
-                        }}
-                        className="text-lg"
-                        size="lg"
-                        fullWidth={true}
-                      >
-                        {card.type}
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </div>
-              ))} */}
-            {/* </div> */}
-
-            <br></br>
-
-            {/* <main class="grid min-h-screen w-full place-items-center bg-gray-900">
-              <div class="absolute left-1/2 top-1/2 h-96 w-80 -translate-x-1/2 -translate-y-1/2 rotate-6 rounded-2xl bg-gray-400"></div>
-
-              <div class="absolute left-1/2 top-1/2 h-96 w-80 -translate-x-1/2 -translate-y-1/2 rotate-6 space-y-6 rounded-2xl bg-gray-100 p-6 transition duration-300 hover:rotate-0">
-                <div class="flex justify-end">
-                  <div class="h-4 w-4 rounded-full bg-gray-900"></div>
-                </div>
-
-                <header class="text-center text-xl font-extrabold text-gray-600">
-                  2021.09.01
-                </header>
-
-                <div>
-                  <p class="text-center text-5xl font-extrabold text-gray-900">
-                    Online Test (Physics)
-                  </p>
-                  <p class="text-center text-4xl font-extrabold text-[#FE5401]">
-                    2 hours
-                  </p>
-                </div>
-
-                <footer class="mb-10 flex justify-center">
-                  <button class="flex items-baseline gap-2 rounded-lg bg-[#FE5401] px-4 py-2.5 text-xl font-bold text-white hover:bg-[#FF7308]">
-                    <span>Start</span>
-                    <i class="fas fa-hand-peace text-xl"></i>
-                  </button>
-                </footer>
-              </div>
-            </main> */}
-            {/* <div className="flex justify-center mt-36">
-              <Pagination
-                totalPages={Math.ceil(mainCardsData.length / pageSize)}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              ></Pagination>
-            </div> */}
           </div>
         </div>
       </header>

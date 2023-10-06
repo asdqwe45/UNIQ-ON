@@ -114,15 +114,20 @@ public class NFTServiceImpl implements NFTService {
     public void likeNFT(Integer nftId, String userId) {
         Members member=memberRepository.findById(userId).get();
         NFTs nft=nftRepository.findById(nftId).get();
-        myCollectionsRepository.save(new MyCollections(null,member,nft));
-        nft.setLiked_cnt(nft.getLiked_cnt()+1);
+        MyCollections myCollections = myCollectionsRepository.findByNfts_Id(nft.getId());
+        if (myCollections == null) {
+            myCollectionsRepository.save(new MyCollections(null,member,nft));
+            nft.setLiked_cnt(nft.getLiked_cnt()+1);
+        }
+
     }
 
     @Override
     public void undoLikeNFT(Integer nftId, String userId) {
         Members member=memberRepository.findById(userId).get();
         NFTs nft=nftRepository.findById(nftId).get();
-        myCollectionsRepository.delete(new MyCollections(null,member,nft));
+        MyCollections myCollections = myCollectionsRepository.findByNfts_Id(nftId);
+        myCollectionsRepository.delete(myCollections);
         nft.setLiked_cnt(nft.getLiked_cnt()-1);
     }
 
@@ -139,7 +144,9 @@ public class NFTServiceImpl implements NFTService {
                 nft.getContractAddress(),
                 nft.getTokenId(),
                 nft.getLiked_cnt(),
-                nft.getCreater().getWalletAddress());
+                nft.getCreater().getWalletAddress(),
+                nft.getOwner().getNickname()
+                );
     }
 
     @Override
@@ -164,8 +171,10 @@ public class NFTServiceImpl implements NFTService {
     public NFTsController.IPFSWebResponse pinToIpfs(NFTsController.PinIpfsWebRequest req, MultipartFile multipartFile, UserDetails user) throws PinataException, IOException {
         NFTs nft=nftQueryRepository.findByCreaterAndName(user.getUsername(),req.name());
         if(nft!=null){
-            throw new RuntimeException("이미 NFT로 발급한 동물입니다.");
+//            throw new RuntimeException("이미 NFT로 발급한 동물입니다.");
+            return null;
         }
+
         File image = File.createTempFile("123", "");
         multipartFile.transferTo(image);
 

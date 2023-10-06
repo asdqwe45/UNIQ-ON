@@ -16,3 +16,6 @@ spring:
 
 server:
   port: 5001
+
+redirect:
+  url: http://localhost:3000

@@ -6,9 +6,17 @@ import { ethers } from "ethers";
 import Web3Token from "web3-token";
 import { useNavigate } from "react-router";
 import { Input } from "@material-tailwind/react";
+import { UserIdCard } from "./UserIdCard";
+import { Typography } from "@material-tailwind/react";
 
 
-export function SignUpButton() {
+export function SignUpButton(props) {
+
+  const sendDataToParent = () => {
+    const data = "card";
+    props.onDataFromChild(data);
+};
+
   const setUserInfo = useUserInfoStore((state) => state.setUserInfo);
   const navigate = useNavigate();
 
@@ -80,10 +88,10 @@ export function SignUpButton() {
       console.log('response.status', response.status);
 
       if (!response.data.success) {
-          alert(response.data.error.message)
+        alert(response.data.error.message)
         return
       }
-    } catch(e) {
+    } catch (e) {
       console.log(e);
       alert("회원가입에 실패했습니다.")
       return
@@ -95,7 +103,13 @@ export function SignUpButton() {
       console.error("MetaMask is not installed");
       // 메타마스크 설치 메세지 및 홈페이지 이동
       alert("MetaMask를 설치해주세요");
-      window.location.href = "https://metamask.io/";
+      // window.location.href = "https://metamask.io/";
+      const newTab = window.open('https://metamask.io/', '_blank');
+      if (newTab) {
+        newTab.focus();
+      } else {
+        alert('팝업 차단이 활성화되어 새 탭을 열 수 없습니다.');
+      }
       return;
     }
     console.log("MetaMask exists");
@@ -156,29 +170,31 @@ export function SignUpButton() {
       if (response.status === 200) {
         alert("회원가입에 성공하였습니다.");
         console.log(response.data);
-
-        ///////////////////////////////////////////////////////////
-        ///////// 넘겨받은 회원정보 처리하는 로직 추가하기  //////////
-        ///////////////////////////////////////////////////////////
-
-        // 회원가입 후 메인페이지로 이동
-        navigate("/");
+        // 로그인 페이지로 이동
+        sendDataToParent();
+        // navigate("/login");
       } 
       console.log("signup success");
 
     } catch (e) {
       console.log("signup failed", e);
       // catch는 axios 외의 에러도 오기 때문에, e.response가 없을 수도 있어서 조건 추가
-      if(e.response) {
+      if (e.response) {
         if (e.response.status === 401) {
           window.alert("DITI 인증서가 유효하지 않습니다! DITI 인증서를 새로 발급해주세요.");
           console.log(e.response);
-          window.location.href = e.response.data.ditiAddress
+          // window.location.href = e.response.data.ditiAddress
+          const newTab = window.open(e.response.data.ditiAddress, '_blank');
+          if (newTab) {
+            newTab.focus();
+          } else {
+            alert('팝업 차단이 활성화되어 새 탭을 열 수 없습니다.');
+          }
           return
-        // 이미 가입된 회원인 경우
+          // 이미 가입된 회원인 경우
         } else if (e.response.status === 405) {
           alert(e.response.data)
-          navigate("/login")
+          navigate("/transaction")
           return
         } else {
           alert("회원가입에 실패했습니다.");
@@ -189,23 +205,31 @@ export function SignUpButton() {
 
   return (
     <div>
-      {/* 닉네임 입력칸 */}
-      <div className="border-2 border-gray-400 m-10 p-5 max-w-3xl mx-auto">
-        <p className="m-5 text-lg font-bold">닉네입 입력</p>
-        {/* <Input label="닉네임을 입력해주세요" type="text" ref={nicknameRef} value="" /> */}
-        <Input label="닉네임을 입력해주세요" type="text" value={nickname} onChange={handleNicknameChange} />
-      </div>
+        <div>
+          {/* 닉네임 입력칸 */}
+          <div className="mb-5">
+          <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="mb-4 font-semibold"
+                  >
+                    닉네임 정하기
+                  </Typography>
+            {/* <Input label="닉네임을 입력해주세요" type="text" ref={nicknameRef} value="" /> */}
+            <Input label="Nickname" type="text" value={nickname} onChange={handleNicknameChange} />
+          </div>
 
-      {/* 프로필 사진 업로드칸 */}
-      {/* <div className="border-2 border-gray-400 m-10 max-w-3xl mx-auto">
-        <p className="m-5 text-lg font-bold">프로필 사진 업로드</p>
-        <input type="file" ref={profileRef} className="m-5"></input>
-      </div> */}
+          {/* 프로필 사진 업로드칸 */}
+          {/* <div className="border-2 border-gray-400 m-10 max-w-3xl mx-auto">
+          <p className="m-5 text-lg font-bold">프로필 사진 업로드</p>
+          <input type="file" ref={profileRef} className="m-5"></input>
+        </div> */}
 
-      {/* 회원가입 버튼 */}
-        <Button onClick={signUp} className="text-3xl w-70 h-30 m-5" color="blue">
-          회원가입
-        </Button>
+          {/* 회원가입 버튼 */}
+          <Button onClick={signUp} className="text-sm w-32 h-30 mx-5 mt-3 bg-gradient-to-l from-green-300 to-[#438fff]">
+            회원가입
+          </Button>
+        </div>
     </div>
   );
 }

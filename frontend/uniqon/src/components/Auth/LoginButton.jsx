@@ -4,21 +4,31 @@ import axios from "axios";
 import Web3Token from "web3-token";
 import useUserInfoStore from "../../stores/UserInfoStore";
 import { useNavigate } from "react-router";
+import { UserIdCard } from "./UserIdCard";
+import { useState } from "react";
 
-export function LoginButton() {
+export function LoginButton(props) {
+
+    const sendDataToParent = () => {
+        const data = "paypal";
+        props.onDataFromChild(data);
+    };
+
     // 메타마스크가 있으면 window에 ethereum이 정의가 돼있어야 함 (확장프로그램에 의해 생성)
     // window에 ethereum이 정의돼있는 것을 injectedProvider라고 함
     // 메타마스크 외에 다른 지갑들도 injectedProvider를 제공하기 때문에, 메타마스크인지 확인하는 절차 필요
     const setAccessToken = useUserInfoStore((state) => state.setAccessToken);
     const setWalletAddress = useUserInfoStore((state) => state.setWalletAddress);
     const navigate = useNavigate();
+    const [showUserIdCard, setShowUserIdCard] = useState(false);
 
     function setAuthorizationToken(token) {
         if (token) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        } else {
-            delete axios.defaults.headers.common["Authorization"];
         }
+        // else {
+        //     delete axios.defaults.headers.common["Authorization"];
+        // }
     }
 
     function detectMetaMask() {
@@ -68,7 +78,8 @@ export function LoginButton() {
             console.error("MetaMask is not installed");
             // 메타마스크 설치 메세지 및 홈페이지 이동
             alert("MetaMask를 설치해주세요");
-            window.location.href = "https://metamask.io/";
+            // window.location.href = "https://metamask.io/";
+            window.open("https://metamask.io/", '_blank').focus()
             return;
         }
         console.log("MetaMask exists");
@@ -124,7 +135,9 @@ export function LoginButton() {
                 setAccessToken(response.data.response);
                 setAuthorizationToken(response.data.response);
                 alert("로그인에 성공하였습니다!");
-                navigate("/transaction");
+
+                // 로그인 성공 시 회원 정보 바탕으로 신분증 보여주기
+                setShowUserIdCard(true);
             }
 
         } catch (e) {
@@ -134,13 +147,18 @@ export function LoginButton() {
                 console.log('e.response.data', e.response.data);
                 if (e.response.data) {
                     alert("DITI 인증서 등록이 되어있지 않습니다.");
-                    window.location.href = e.response.data.ditiAddress;
+                    // window.location.href = e.response.data.ditiAddress;
+                    const newTab = window.open(e.response.data.ditiAddress, '_blank');
+                    if (newTab) {
+                      newTab.focus();
+                    } else {
+                      alert('팝업 차단이 활성화되어 새 탭을 열 수 없습니다.');
+                    }
                 } else {
-                    alert("등록된 회원이 아닙니다!");
-                    navigate("/signup");
+                    alert("UNIQON에 등록된 회원이 아닙니다! 회원가입을 해주세요");
+                    sendDataToParent();
+                    // navigate("/signup");
                 }
-                // alert("DITI 인증서 등록이 되어있지 않습니다.");
-                // window.location.href = e.response.data.ditiAddress;
 
             } else if(e.response && e.response.status === 500) {
                 console.log("login failed", e.response);
@@ -152,13 +170,28 @@ export function LoginButton() {
         }
     }
 
+
+      // UserIdCard 확인 버튼 클릭 시 실행될 함수
+    const handleUserIdCardConfirm = () => {
+        // 카드 확인버튼 누르면 거래 페이지로 이동
+        navigate("/transaction");
+    };
+
+
     return (
-        <Button
-            className="text-3xl w-70 h-30 m-5"
-            color="yellow"
+        <div>
+          <Button
+            className="text-sm w-70 h-30 mx-5 mt-3 bg-gradient-to-r from-green-300 to-[#438fff]"
+            // color="green"
             onClick={connectMetaMask}
-        >
-            DITI 인증서 로그인
-        </Button>
+          >
+            DITI 인증 로그인
+          </Button>
+
+            {showUserIdCard && (
+                <UserIdCard onConfirm={handleUserIdCardConfirm} />
+            )}
+        
+      </div>
     );
 }

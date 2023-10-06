@@ -5,8 +5,11 @@ import { useTransactionStore } from "../../stores/TransactionStore";
 import { TopNavBar } from "../../components/Common/TopNavBar";
 import { SalesCard } from "../../components/Common/SalesCard";
 import { TransactionBanner } from "../../components/Transaction/TransactionBanner";
-import { RegisterSalesItem } from "./RegisterSalesItem";
 import useUserInfoStore from "../../stores/UserInfoStore";
+
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+
+import 'swiper/css';
 
 import { MdOutlinePostAdd } from "react-icons/md";
 
@@ -25,30 +28,36 @@ export function Transaction() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [price, setPrice] = useState("");
+  const [ 새로운등록발견, set새로운등록발견 ] = useState(false);
 
-  const { salesItemsList, setSalesItemsList  
+  const { salesItemsList, setSalesItemsList,
+    nftList, setNftList,  
     } = useTransactionStore();
 
 
   useEffect(() => {
     // console.log(accessToken)
     getSales();
-  }, []);
+    // getNFTList();
+  }, [새로운등록발견]);
   
 
   // 판매글 등록시에 내가 가지고 있는 NFT 조회
   
-  // const [nftList, setNftList] = useState([]);
-  // const [page, setPage] = useState(0);
-  // // const [totalPage, setTotalPage] = useState(0);
-  // // 나의 NFT 조회
+  const [page, setPage] = useState(0);
+  const [result, setResult] = useState([]);
+
+  const swiper = useSwiper();
+
+  // const [totalPage, setTotalPage] = useState(0);
+  // 나의 NFT 조회
   // useEffect(() => {
   //   async function getMyNft() {
   //     try {
   //       const response = await axios.get(`/api/myPage/mynfts`, {
   //         params: {
   //           page: page,
-  //           size: 3, // 추후에 이 부분은 원하는 갯수로 변경
+  //           size: 9, // 추후에 이 부분은 원하는 갯수로 변경
   //         },
   //       });
   //       if (response.status === 200) {
@@ -86,14 +95,33 @@ export function Transaction() {
         }
       }
 
-  async function getNFTList(){
-    const myNFTList=await axios.get("/api/myPage/mynfts",{
-      params:{
-        page:0,
-        size: 10,
+  // async function getNFTList(){
+  //   const myNFTList=await axios.get("/api/myPage/mynfts",{
+  //     params:{
+  //       page: 0,
+  //       size: 9,
+  //     }
+  //   })
+  //   console.log("myNFTs",myNFTList.data.response)
+  //   setNftList(myNFTList.data.response.content)
+  //   console.log("nftList",nftList)
+    
+  // }
+
+  function getNFTList() {
+    axios.get("/api/myPage/mynfts", {
+      params: {
+        page: 0,
+        size: 50,
       }
     })
-    console.log("myNFTs",myNFTList.data.response)
+    .then((response) => {
+      console.log("myNFTs", response.data.response.content);
+      setNftList(response.data.response.content);
+    })
+    .catch((error) => {
+      console.error("Error fetching NFT list:", error);
+    });
   }
 
   async function registerSales(title, content, price, tokenId) {
@@ -117,6 +145,7 @@ export function Transaction() {
             },
         });
         console.log(res.data)
+        set새로운등록발견(!새로운등록발견)
         
       } catch (err) {
         console.log(err);
@@ -150,12 +179,12 @@ export function Transaction() {
       </Button>
       </div>
       <Dialog
-        size="xs"
+        size="sm"
         open={open}
         handler={handleOpen}
         className="bg-transparent shadow-none"
       >
-        <Card className="mx-auto w-full max-w-[24rem]">
+        <Card className="mx-auto w-full max-w-[48rem]">
           <CardHeader
             variant="gradient"
             color="blue"
@@ -165,37 +194,85 @@ export function Transaction() {
               판매글 등록
             </Typography>
           </CardHeader>
-          <CardBody className="flex flex-col gap-4">
+          <CardBody className="flex flex-wrap gap-4">
 
             
           {/* 내가 가진 nft 목록 중에서 선택하기 */}
-          {/* {nftList.map((nft, index) => (
-          <div className="inline-flex flex-col min-w-[320px] items-start relative flex-[0_0_auto] bg-white rounded-[8px] overflow-hidden shadow-[0px_8px_40px_#0000000a,0px_2px_5px_#0000000d,0px_0px_2px_#00000026]">
-            <div>
-             // 카드 넣기
-              <Card key={index} className="w-full max-w-[20rem] shadow-lg">
-                <CardHeader floated={false} color="blue-gray">
-                  <img src={nft.image} alt="ui/ux review check" />
-                  <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
-                </CardHeader>
-                <CardFooter className="pt-3 pb-3">
-                  <Button className="text-sm" size="sm" fullWidth={true}>
-                    {nft.name}
-                  </Button>
-                </CardFooter>
-              </Card>
-            </div>
+          
+
+          {/* {nftList.length > 0 &&
+    nftList.map((nft, index) => (
+      <div key={index} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+        <div className="inline-flex flex-col min-w-[320px] items-start relative flex-[0_0_auto] bg-white rounded-[8px] overflow-hidden shadow-[0px_8px_40px_#0000000a,0px_2px_5px_#0000000d,0px_0px_2px_#00000026]">
+          <div>
+            <Card className="w-full max-w-[20rem] shadow-lg">
+              <CardHeader floated={false} color="blue-gray">
+                <img src={nft.image} alt="ui/ux review check" />
+                <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
+              </CardHeader>
+              <CardFooter className="pt-3 pb-3">
+                <Button
+                  className="text-sm"
+                  size="sm"
+                  fullWidth={true}
+                  onClick={() => setTokenId(nft.tokenId)}
+                >
+                  {nft.name}
+                </Button>
+              </CardFooter>
+            </Card>
           </div>
-        ))} */}
+        </div>
+      </div>
+    ))} */}
+
+    <Swiper
+    slidesPerView={2}
+    spaceBetween={20}
+    pagination={true} className="mySwiper" style={{ width: "100%", height: "100%" }}>
+      {nftList.map((nft, index) => (
+        <SwiperSlide key={index}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
+            <img src={nft.image} alt={`포스트 이미지 ${index}`} onClick={() => setTokenId(nft.tokenId)} />
+            
+          </div>
+          {
+          nft.tokenId === tokenId ? (
+          <Button variant="gradient"
+          className="mt-2 text-sm"
+          size="sm"
+          fullWidth={true}
+          color="amber"
+        >
+          선택됨
+  </Button>
+    ) : (
+    <Button variant="gradient"
+    className="mt-2 text-sm"
+    size="sm"
+    fullWidth={true}
+    onClick={() => setTokenId(nft.tokenId)}
+  >
+    {nft.name}
+</Button>
+      )}
+          
+        </SwiperSlide>
+      ))}
+    </Swiper>
+    {/* { nftList.length > 0 && 
+      <Button className="flex items-end justify-end place-items-end flex-end" onClick={() => swiper.slideNext()}>Next</Button> } */}
+
+
         
 
-            <Input color="blue" label="판매 NFT선택" value={tokenId} size="lg" onChange={(e) => setTokenId(e.target.value)}/>
+            {/* <Input color="blue" label="판매 NFT선택" value={tokenId} size="lg" onChange={(e) => setTokenId(e.target.value)}/> */}
             <Input color="blue" label="판매글 제목" value={title} size="lg" onChange={(e) => setTitle(e.target.value)} />
             <Input color="blue" label="판매 가격(ETH)" value={price} size="lg" onChange={(e) => setPrice(e.target.value)}/>
             <Textarea color="blue" label="판매글 내용" value={content} size="lg" onChange={(e) => setContent(e.target.value)}/>
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" onClick={() => {handleOpen(); registerSales(title, content, price, tokenId)}} fullWidth>
+            <Button variant="gradient" onClick={() => {handleOpen(); registerSales(title, content, price, tokenId); console.log(tokenId);}} fullWidth>
               등록
             </Button>
           </CardFooter>
@@ -214,9 +291,8 @@ export function Transaction() {
             </div>
           
 
-        <Button color="teal" onClick={getSales}>판매글 조회</Button>
+        
         <br></br>
-        {/* <RegisterSalesItem /> */}
         </div>
         </div>
       </header>

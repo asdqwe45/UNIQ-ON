@@ -51,6 +51,7 @@ public class PostRepository {
 
     public List<Posts> getPostAll(Pageable pageable) { return jpaQueryFactory.selectFrom(posts)
             .where(posts.state.eq(0))
+            .orderBy(posts.id.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();}
@@ -58,7 +59,7 @@ public class PostRepository {
     public Posts getPostById(int postId) {
         return jpaQueryFactory.selectFrom(posts).where(posts.state.eq(0).and(posts.id.eq(postId))).fetchOne();
     }
-    public List<Posts> getSearchPost(String word, Pageable pageable) { return jpaQueryFactory.selectFrom(posts).where(posts.state.eq(0).and(posts.title.contains(word))).offset(pageable.getOffset())
+    public List<Posts> getSearchPost(String word, Pageable pageable) { return jpaQueryFactory.selectFrom(posts).where(posts.state.eq(0).and(posts.title.contains(word))).orderBy(posts.id.desc()).offset(pageable.getOffset())
             .limit(pageable.getPageSize()).fetch();}
 
     @Transactional

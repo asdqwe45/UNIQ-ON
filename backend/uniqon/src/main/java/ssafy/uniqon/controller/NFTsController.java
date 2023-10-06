@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import ssafy.uniqon.service.NFTService;
 
 import java.io.IOException;
 
+import static ssafy.uniqon.global.response.Response.ERROR;
 import static ssafy.uniqon.global.response.Response.OK;
 
 @Slf4j
@@ -75,9 +77,21 @@ public class NFTsController {
             @Schema(description = "좋아요 수")
             Integer likedCnt,
             @Schema(description = "creater")
-            String creater
+            String creater,
+            String ownerNickname
     ){
-        public NFTWebResponse(Integer nftId, String owner, String image, String name, Integer age, String feature, String nftURL, String contractAddress, Integer tokenId, Integer likedCnt, String creater) {
+        public NFTWebResponse(@Schema(description = "NFT ID")
+                              Integer nftId, @Schema(description = "소유자 주소")
+                              String owner, @Schema(description = "이미지 URL")
+                              String image, @Schema(description = "이름")
+                              String name, @Schema(description = "나이")
+                              Integer age, @Schema(description = "특징")
+                              String feature, @Schema(description = "NFT Metadata URL")
+                              String nftURL, @Schema(description = "컨트랙트 주소")
+                              String contractAddress, @Schema(description = "Token ID")
+                              Integer tokenId, @Schema(description = "좋아요 수")
+                              Integer likedCnt, @Schema(description = "creater")
+                              String creater, String ownerNickname) {
             this.nftId = nftId;
             this.owner = owner;
             this.image = image;
@@ -88,7 +102,8 @@ public class NFTsController {
             this.contractAddress = contractAddress;
             this.tokenId = tokenId;
             this.likedCnt = likedCnt;
-            this.creater= creater;
+            this.creater = creater;
+            this.ownerNickname = ownerNickname;
         }
     }
 
@@ -141,7 +156,13 @@ public class NFTsController {
     public Response<?> pinToIpfs(@RequestPart(value = "file") MultipartFile multipartFile,
                                  @RequestPart(value = "data") PinIpfsWebRequest req,
                                  @AuthenticationPrincipal UserDetails user) throws PinataException, IOException {
-        return OK(nftService.pinToIpfs(req,multipartFile,user));
+        NFTsController.IPFSWebResponse res = nftService.pinToIpfs(req,multipartFile,user);
+        if (res == null) {
+            return ERROR("중복된 이름입니다.", HttpStatus.BAD_REQUEST);
+        } else {
+            return OK(res);
+        }
+
     }
 
     @Operation(summary = "NFT 조회", description = "지갑 주소를 통해 위시리스트 조회합니다.")

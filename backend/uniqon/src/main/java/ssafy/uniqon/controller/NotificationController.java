@@ -85,10 +85,9 @@ public class NotificationController {
     }
 
     @DeleteMapping("/{notificationId}")
-    public Response<?> deleteNotification(@PathVariable int notificationId) {
+    public Response<?> deleteNotification(@PathVariable int notificationId, @AuthenticationPrincipal UserDetails userDetails) {
         log.debug("# 알림 지우기 요청 ... : {}", notificationId);
-        String walletAddress = "0x00000000000000";
-        int result = notificationService.deleteNotification(new deleteNotificationWebRequest(notificationId, walletAddress));
+        int result = notificationService.deleteNotification(new deleteNotificationWebRequest(notificationId, userDetails.getUsername()));
         if (result == 1) {
             log.debug("# 알림 삭제 성공!");
             return OK(null);

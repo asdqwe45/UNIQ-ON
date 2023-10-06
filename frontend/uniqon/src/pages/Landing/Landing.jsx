@@ -23,18 +23,18 @@ export function Landing() {
       <Section3 />
       {/* <Section4 /> */}
       </div>
-      <Button
+      {/* <Button
         variant='gradient'
           className="text-4xl w-96 h-28 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"
           onClick={() => {
             navigate("/forlogin");
 
           }}
-        >로그인 페이지 제작중 뚝딱뚝딱</Button>
+        >로그인 페이지 제작중 뚝딱뚝딱</Button> */}
 
-        <LoginButton />
+        {/* <LoginButton />
 
-        <Button
+         <Button
           className="text-4xl w-96 h-28"
           onClick={() => {
             navigate("/signup");
@@ -43,65 +43,8 @@ export function Landing() {
           color="orange"
         >
           회원가입
-        </Button>
-
-        <Button
-          className="text-4xl w-96 h-28"
-          onClick={() => {
-            navigate("/collections");
-
-          }}
-          color="red"
-        >
-
-          도감
-        </Button>
-        <Button
-          className="text-4xl w-96 h-28"
-          onClick={() => {
-            navigate("/mypage");
-
-          }}
-          color="yellow"
-        >
-
-          마이페이지
-        </Button>
-        <Button
-          className="text-4xl w-96 h-28"
-          onClick={() => {
-            navigate("/transaction");
-
-          }}
-          color="black"
-        >
-
-          거래
-        </Button>
-        <Button
-          className="text-4xl w-96 h-28"
-          onClick={() => {
-            navigate("/wishlist");
-
-          }}
-          color="blue"
-        >
-
-          위시리스트
-        </Button>
-        <Button
-          className="text-4xl w-96 h-28"
-          onClick={() => {
-            navigate("/nft");
-
-          }}
-          color="purple"
-        >
-
-          NFT
-        </Button>
-
-        
+        </Button> */}
+       
 
       </header>
 

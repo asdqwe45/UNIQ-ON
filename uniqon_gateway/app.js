@@ -143,6 +143,7 @@ app.post("/api/users/signup", upload.single("profileImg"), async (req, res) => {
       birth: vcs[0].data.birth,
       gender: vcs[0].data.gender,
       vpToken: vpJwt,
+
       // password는 지갑주소 마지막 20자리로 설정함
       password: req.headers.walletaddress.slice(-20),
     };
@@ -171,9 +172,9 @@ app.post("/api/users/signup", upload.single("profileImg"), async (req, res) => {
         }
       );
       if (springResponse.status == 200) {
-        // 회원가입 성공 시 200 상태코드와 회원정보 전송
-        res.status(200).send(data)
+        res.status(200).send("success")
       } else {
+        // 회원가입 실패
         res.status(springResponse.status).send(springResponse.data);
       }
     } catch (e) {
@@ -301,9 +302,8 @@ app.get("/api/users/login", async (req, res) => {
         },
       }
     );
-    ////////////////////////////////////////////////////////////////////////////
-    ///// 유니콘에 회원가입이 되지 않은 상태인 경우 로그인 시도 시 에러 처리 추가////
-    ////////////////////////////////////////////////////////////////////////////
+  
+    // 유니콘에 회원가입이 되지 않은 상태인 경우 로그인 시도 시 에러 처리 
     if (springResponse.data.success) {
       res.status(springResponse.status).send(springResponse.data);
       return;

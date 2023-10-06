@@ -34,8 +34,10 @@ export async function createVC(walletAddress, data) {
     const vcPayload = {
         // 유저 지갑 주소 기반으로 did 생성
         sub: 'did:ethr:sepolia:' + walletAddress,
-        nbf: 1562950282,
-        //    exp: 1646337778,
+        // nbf: 1562950282,
+        //    exp: 1646337778
+        nbf: Math.floor(Date.now()/1000),
+        exp: Math.floor(Date.now()/1000+86400*365),
         vc: {
             '@context': ['https://www.w3.org/2018/credentials/v1'],
             type: ['VerifiableCredential'],

@@ -142,6 +142,7 @@ export function ItemDetailCard({ item }) {
   }
 
   async function transact(price, sellerAddress, tokenId) {
+    try {
     //price는 판매자가 등록한 가격 단위는 이더
     //sellerAddress 판매자 지갑 주소
     //tokenId 거래 될 NFT tokenId
@@ -163,19 +164,20 @@ export function ItemDetailCard({ item }) {
       gasProvider
     );
 
-    // const fee=ethers.parseEther(price)
-    const fee = ethers.parseEther("0.0001");
+    const fee=ethers.parseEther(price)
     const options = { value: fee };
 
     // const receipt=await contractInstance.connect(signer).saleNFT(sellerAddress,price,tokenId,fee,options)
     const receipt = await contractInstance
       .connect(signer)
       .saleNFT(
-        "0xd83e613d8B4a2Cb4fAFA04F1ee87C8e6900b81A4",
-        ethers.parseEther("0.0001"),
-        47,
+        sellerAddress,
+        ethers.parseEther(price),
+        tokenId,
         options
       );
+
+
     const rr = await receipt.wait();
     const txReceipt = await net.getTransactionReceipt(receipt.hash);
     // console.log(txReceipt)
@@ -189,7 +191,8 @@ export function ItemDetailCard({ item }) {
     //판매자 주소
     //구매자 주소
     const saveTxHisData = {
-      tokenId: 47,
+      tokenId: tokenId,
+      // 여기 tokenId 는 판매자가 등록한 tokenId로 바꾸기
       txHash: receipt.hash,
       postId: postId,
     };
@@ -201,7 +204,12 @@ export function ItemDetailCard({ item }) {
       }
     });
     console.log(saveTxHistory);
+    alert("결제가 완료되었습니다.");
+  } catch (error) {
+    console.log(error);
+    alert("결제에 실패했습니다.");
   }
+}
 
   return (
     <Card className="w-full h-[24rem] max-w-[60rem] flex-row">
@@ -251,6 +259,9 @@ export function ItemDetailCard({ item }) {
         >
           <FaEthereum /> {forDetailItem.PostInfo.price} ETH
         </Typography>
+        <Typography variant="h6" color="gray" className="mb-4 uppercase">
+          {forDetailItem.nftInfo.name}
+        </Typography>
         <Typography variant="h6" color="gray" className="mb-4 font-normal">
           by {forDetailItem.SellerInfo.nickname}
         </Typography>
@@ -258,15 +269,17 @@ export function ItemDetailCard({ item }) {
           {forDetailItem.PostInfo.content}
         </Typography>
         <a href="#" className="inline-block">
-          <Button
-            onClick={handleOpen}
-            variant="gradient"
-            className="flex text-lg"
-            color="red"
-          >
-            구매하기
-            <img className="w-8 h-8 ml-1" src="/coin.gif" alt="" />
-          </Button>
+          {walletAddress !== sellerAddress && (
+            <Button
+              onClick={handleOpen}
+              variant="gradient"
+              className="flex text-lg"
+              color="red"
+            >
+              구매하기
+              <img className="w-8 h-8 ml-1" src="/coin.gif" alt="" />
+            </Button>
+          )}
         </a>
       </CardBody>
       {/* 모달 */}

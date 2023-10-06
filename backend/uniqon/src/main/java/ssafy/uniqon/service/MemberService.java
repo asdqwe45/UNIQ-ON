@@ -94,19 +94,11 @@ public class MemberService {
     }
 
     @Transactional
-    public int modifyUserInfo (String walletAddress, MultipartFile multipartFile ,MyPageController.ModifyMyProfileWebRequest req) throws IOException {
+    public int modifyUserInfo (String walletAddress, String nickname) {
         Members members = memberRepository.findById(walletAddress).orElseThrow(() -> new NotFoundException(Members.class, walletAddress));
         if (members != null) {
             log.debug("# 회원정보 수정중..");
-            if (req.nickname() != null ) {
-                members.setNickname(req.nickname());
-            }
-            if (multipartFile != null) {
-                members.setProfileImage(multipartFile.getBytes());
-            }
-            if (req.password() != null) {
-                members.setPassword(passwordEncoder.encode(req.password()));
-            }
+                members.setNickname(nickname);
             memberRepository.save(members);
             return 1;
         }

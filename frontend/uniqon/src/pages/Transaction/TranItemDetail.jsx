@@ -8,15 +8,18 @@ import { Button, Dialog,
   Card, CardBody, Input, CardFooter, CardHeader, Typography, Textarea } from "@material-tailwind/react";
 import { useTransactionStore } from "../../stores/TransactionStore";
 import useUserInfoStore from "../../stores/UserInfoStore";
+import { TiArrowLeftThick } from "react-icons/ti";
 
 import { LuFileEdit } from "react-icons/lu";
 import { MdDeleteOutline } from "react-icons/md";
+// import { useLocation } from 'react-router-dom';
 
 
 
 export function TranItemDetail () {
 
   const navigate = useNavigate();
+  // const location = useLocation();
 
   const { id } = useParams();
   const [ item, setItem ] = useState({});
@@ -25,13 +28,14 @@ export function TranItemDetail () {
   const [price, setPrice] = useState("1000");
   const { forDetailItem, setForDetailItem } = useTransactionStore();
   // const URL = "http://localhost:5000"
-  const { selectedNftId, setSelectedNftId, selectedPostId, setSelectedPostId } = useTransactionStore();
+  const { sellerAddress, setSellerAddress, selectedNftId, setSelectedNftId, selectedPostId, setSelectedPostId } = useTransactionStore();
 
   const { accessToken, walletAddress } = useUserInfoStore();
 
   const [수정open, set수정Open] = React.useState(false);
   const 수정handleOpen = () => { set수정Open(!수정open); };
   const [수정할NFTid, set수정할NFTid] = useState("");
+  // const { wishCheck } = location.state;
 
   function goToTransaction() {
     navigate("/transaction");
@@ -66,6 +70,8 @@ export function TranItemDetail () {
           // console.log(res.data.response)
           setItem(res.data.response)
           setForDetailItem(res.data.response)
+          
+          setSellerAddress(res.data.response.SellerInfo.walletAddress)
   
       } catch(err) {
         console.log(err)
@@ -81,16 +87,21 @@ export function TranItemDetail () {
         price: price,
         title: title,
         content: content,
-        walletAddress: walletAddress,
       };
 
-      console.log(id)
+      console.log(data)
 
-      const res = await axios.put(`/api/sales/update/${id}`, data, {
+      const updateForm=new FormData()
+        updateForm.append("data",new Blob([JSON.stringify(data)],{type:'application/json'}))
+
+      const res = await axios.put(`/api/sales/update/${id}`, updateForm, {
         headers: {
           Authorization: "Bearer " + accessToken,
+          "Content-Type": "multipart/form-data"
           },
-      });
+        }
+
+      );
         console.log(res.data)
 
     } catch(err) {
@@ -142,6 +153,9 @@ export function TranItemDetail () {
         <br></br> */}
         </div>
         <div className="relative flex justify-end right-[240px] top-[140px]">
+          {
+            sellerAddress === walletAddress ? (
+              <>
         <Button onClick={수정handleOpen} variant="gradient" className="flex items-center self-end">
           <LuFileEdit className="w-5 h-5 mr-1"/>
         판매글 수정
@@ -150,6 +164,11 @@ export function TranItemDetail () {
         <MdDeleteOutline className="w-5 h-5 mr-1"/>
         판매글 삭제
         </Button>
+        </> 
+            ) : (
+              <></>
+            )
+        }
         
         {/* <Button color="gray" onClick={getSalesDetail}>판매 상세 조회</Button> */}
           
@@ -188,9 +207,18 @@ export function TranItemDetail () {
       </Dialog>
       </div>
       
+      <div className="flex flex-row">
+              <div style={{ marginLeft: '240px', marginTop: '300px'  }}>
+                <Button onClick={() => navigate(-1)}>
+                  <TiArrowLeftThick
+                    style={{ fontSize: "20px" }}
+                  ></TiArrowLeftThick>
+                </Button>
+              </div>
+            </div>
         
         </div>
-          
+        
       </div>
       
         </header>

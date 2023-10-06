@@ -56,4 +56,24 @@ public class VcServiceImpl implements VcService{
             return 2;
         }
     }
+
+    @Override
+    public void updateVc(VcController.updateVcWebRequest req) {
+        log.debug("# VC 갱신중..");
+        Vc vc = vcRepository.findByAuth_WalletAddressAndType(req.walletAddress(), req.type());
+        Auth auth = authRepository.findByWalletAddress(req.walletAddress());
+        if (vc != null && auth != null) {
+            vcRepository.save(Vc.builder()
+                    .id(vc.getId())
+                    .createDateTime(vc.getCreateDateTime())
+                    .auth(auth)
+                    .vcJwt(req.vcJwt())
+                    .type(req.type())
+                    .build());
+            log.debug("# VC 갱신 성공!");
+        } else{
+            log.warn("# VC 갱신 실패!");
+        }
+    }
+
 }

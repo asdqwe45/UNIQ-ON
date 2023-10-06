@@ -1,5 +1,4 @@
 import { SignUpButton } from "../../components/Auth/SignUpButton"
-import { useState } from "react";
 
 export function SignUp() {
 

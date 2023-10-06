@@ -41,6 +41,12 @@ public class VcController {
             String type
     ){}
 
+    public record updateVcWebRequest(
+            String walletAddress,
+            String vcJwt,
+            String type
+    ){}
+
     @GetMapping("/{walletAddress}/{type}")
     public Response<?> getVc(@PathVariable String walletAddress, @PathVariable String type) {
         getVcWebRequest req = new getVcWebRequest(walletAddress, type);
@@ -75,6 +81,13 @@ public class VcController {
         } else {
             return ERROR("이미 등록된 VC입니다", HttpStatus.BAD_REQUEST);
         }
-
     }
+
+    @PutMapping
+    public Response<?> updateVc(@RequestBody updateVcWebRequest req){
+        log.debug("# VC 갱신 요청: {}", req);
+        vcService.updateVc(req);
+        return OK(null);
+    }
+
 }
