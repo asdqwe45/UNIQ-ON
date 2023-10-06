@@ -1,0 +1,51 @@
+version: '3'
+
+volumes:
+  diti_main_data:
+    external:
+      name: diti_main_data
+
+networks:
+  diti_network:
+    driver: bridge
+
+services:
+  diti_mysql:
+    restart: on-failure
+    image: 'mysql:latest'
+    container_name: 'diti_mysql'
+    environment:
+      MYSQL_DATABASE: diti
+      MYSQL_ROOT_PASSWORD: 1234
+      TZ: Asia/Seoul
+    networks:
+      - diti_network
+    volumes:
+      - diti_main_data:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    
+  ditiSpringServer:
+    restart: on-failure
+    depends_on:
+      - diti_mysql
+    image: 'jihyon/diti-spring:latest'
+    container_name: ditiSpringServer
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:mysql://diti_mysql:3306/diti'
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    networks:
+      - diti_network
+  
+  ditiNodejsServer:
+    restart: on-failure
+    depends_on:
+      - ditiSpringServer
+    image: 'jihyon/diti-nodejs:latest'
+    container_name: ditiNodejsServer
+    ports:
+      - '7000:7000'
+    networks:
+      - diti_network

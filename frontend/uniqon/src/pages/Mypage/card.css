@@ -1,0 +1,34 @@
+.flip {
+  width: 200px;
+  height: 250px;
+  perspective: 1100px;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: 1.2s;
+  transform-style: preserve-3d;
+}
+
+.front,
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.front {
+  background: red;
+}
+
+.back {
+  background: white;
+  transform: rotateY(180deg);
+}
+
+.flip:hover .card {
+  transform: rotateY(180deg);
+}

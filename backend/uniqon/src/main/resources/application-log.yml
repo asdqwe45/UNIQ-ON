@@ -1,0 +1,15 @@
+--- # local 설정
+spring:
+  config:
+    activate:
+      on-profile: "log-local"
+
+logging:
+  level:
+    root: info    # 스프링 라이브러리의 로그는 info부터 출력
+    ssafy.uniqon: debug   # 프로젝트 로그는 debug부터 출력
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace    # SQL에 실제 들어가는 파라미터값 확인
