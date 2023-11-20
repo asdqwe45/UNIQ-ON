@@ -11,7 +11,12 @@ import {
   Badge,
   List,
   Input,
-Dialog, Typography, Card, CardBody, CardFooter, CardHeader
+  Dialog,
+  Typography,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
 } from "@material-tailwind/react";
 import useUserInfoStore from "../../stores/UserInfoStore";
 
@@ -21,12 +26,13 @@ export function TopNavBar() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [userInfo, setUserInfo] = useState();
   const [open, setOpen] = useState(false);
-  const handleOpen = () => { setOpen(!open); };
+  const handleOpen = () => {
+    setOpen(!open);
+  };
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [newNickname, setNewNickname] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
-  const { accessToken, walletAddress } = useUserInfoStore();
-  
+  const { accessToken } = useUserInfoStore();
 
   const goToLanding = () => {
     if (accessToken) {
@@ -35,12 +41,11 @@ export function TopNavBar() {
       navigate("/");
     }
   };
-  // 마켓플레이스(거래 목록 페이지)로 이동
+
   const goToTransaction = () => {
     navigate("/transaction");
   };
 
-  // 도감 페이지로 이동
   const goToCollection = () => {
     navigate("/collections");
   };
@@ -72,18 +77,13 @@ export function TopNavBar() {
   const handleNicknameCancel = () => {
     setNewNickname(userInfo.nickname);
     setIsEditingNickname(false);
-  }
+  };
 
   const handleNicknameChange = async (e) => {
-    // console.log(newNickname);
-    // if (e.target.value.length < 3) {
-    //   alert("3글자 이상 입력해주세요");
-    //   return;
-    // }
     setNewNickname(e.target.value);
     if (newNickname !== e.target.value) {
       try {
-        const response = await axios.get(`/api/users/duplicate/${e.target.value}`)
+        const response = await axios.get(`/api/users/duplicate/${e.target.value}`);
         if (response.status === 200 && response.data.success) {
           setIsNicknameAvailable(true);
         } else {
@@ -97,22 +97,19 @@ export function TopNavBar() {
 
   const handleNicknameSave = async () => {
     try {
-      const response1 = await axios.get(`/api/users/duplicate/${newNickname}`)
-      console.log(response1);
+      const response1 = await axios.get(`/api/users/duplicate/${newNickname}`);
       if (response1.status === 200 && response1.data.success) {
         const response2 = await axios.put(`/api/myPage/info/${newNickname}`);
-        console.log(response2);
         if (response2.status === 200) {
           alert("닉네임 변경이 완료되었습니다!");
         }
       } else {
         return;
       }
-      
     } catch (error) {
       console.log(error);
     }
-    
+
     setUserInfo({ ...userInfo, nickname: newNickname });
     setIsEditingNickname(false);
   };
@@ -122,12 +119,10 @@ export function TopNavBar() {
       const response = await axios.get("/api/notifications", {
         params: {
           page: 0,
-          size: 10
-        }
+          size: 10,
+        },
       });
-      console.log("알림 가져오기 성공", response);
       setNotifications(response.data.response.content);
-      
     } catch (error) {
       console.log("알림 가져오기 실패", error);
     }
@@ -147,20 +142,19 @@ export function TopNavBar() {
     }
   };
 
-    const deleteNotification =  async(notification) => {
+  const deleteNotification = async (notification) => {
     const notificationId = notification.notificationId;
     try {
       const response = await axios.delete(`/api/notifications/${notificationId}`);
       if (response.status === 200 && response.data.success) {
-        console.log("알림 삭제 완료", response);
+        console.log("알림 삭제 완료");
       } else {
-        console.log("알림 삭제 실패!", response);
+        console.log("알림 삭제 실패!");
       }
-      } catch (error) {
+    } catch (error) {
       console.log("알림 삭제 실패", error);
-      };
-      getNotifications();
-      
+    }
+    getNotifications();
   };
 
   useEffect(() => {
@@ -203,15 +197,10 @@ export function TopNavBar() {
         </div>
         <div className="flex items-center justify-center pl-[8.65px] pr-[8.68px] py-0 relative flex-1 grow">
           <div className="relative w-[400px] h-[48px] ml-[-26.67px] mr-[-26.67px]">
-            <div className="relative h-[48px] rounded-full">
-              {/* <div className="flex w-[500px] min-h-[48px] items-center pl-[48px] pr-[32px] py-px absolute top-0 left-0 bg-[#0000000d] rounded-full overflow-hidden">
-                <div className="inline-flex flex-col items-start pl-0 pr-[330px] py-0 relative flex-[0_0_auto]">
-                </div>
-              </div> */}
-            </div>
+            <div className="relative h-[48px] rounded-full"></div>
           </div>
         </div>
-        
+
         <div className="w-[50px] h-[48px] relative flex-1 grow">
           <div className="flex">
             <button
@@ -227,7 +216,6 @@ export function TopNavBar() {
                   className="absolute w-[34px] h-[32px] top-7 left-10"
                   alt="Video player"
                 />
-                {/* <img className="absolute w-[112px] h-[94px] top-0 left-0" alt="Video player" /> */}
               </div>
             </button>
             <Menu>
@@ -244,7 +232,14 @@ export function TopNavBar() {
                 </Button>
               </MenuHandler>
               <MenuList className="absolute top-0 left-0">
-                <MenuItem onClick={() => { handleOpen(); getMyInfo();}}>내 정보</MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleOpen();
+                    getMyInfo();
+                  }}
+                >
+                  내 정보
+                </MenuItem>
                 <MenuItem onClick={goToMypage}>마이페이지</MenuItem>
                 <MenuItem onClick={goLogout}>로그아웃</MenuItem>
               </MenuList>
@@ -252,46 +247,43 @@ export function TopNavBar() {
           </div>
         </div>
 
-        <Dialog
-          size="sm"
-          open={open}
-          handler={handleOpen}
-          className="bg-transparent shadow-none"
-          >
-            <Card className="mx-auto w-full max-w-[48rem]">
-              <CardHeader
-                variant="gradient"
-                color="yellow"
-                className="grid mb-4 h-28 place-items-center"
-              >
-                <Typography variant="h3" color="black">
-                  내 정보
-                </Typography>
-              </CardHeader>
+        <Dialog size="sm" open={open} handler={handleOpen} className="bg-transparent shadow-none">
+          <Card className="mx-auto w-full max-w-[48rem]">
+            <CardHeader
+              variant="gradient"
+              color="yellow"
+              className="grid mb-4 h-28 place-items-center"
+            >
+              <Typography variant="h3" color="black">
+                내 정보
+              </Typography>
+            </CardHeader>
 
-                <CardBody className="grid grid-cols-3 gap-4">  
-                  {userInfo && (
-                    <div>
-                      <List><strong>지갑 주소 : </strong>{userInfo.walletAddress}</List>
-                      <List><strong>이름 : </strong>{userInfo.name}</List>
-                      <List><strong>닉네임 : </strong>{isEditingNickname ? (
-                    <div>
-                    <Input
-                      type="text"
-                      // value={userInfo.nickname}
-                      value={newNickname}
-                      onChange={handleNicknameChange}
-                      // placeholder={userInfo.niname}
-                    />
-                    {isNicknameAvailable ? (
-                      <strong className="text-green-500">사용 가능한 닉네임입니다.</strong>
+            <CardBody className="grid grid-cols-3 gap-4">
+              {userInfo && (
+                <div>
+                  <List>
+                    <strong>지갑 주소 : </strong>
+                    {userInfo.walletAddress}
+                  </List>
+                  <List>
+                    <strong>이름 : </strong>
+                    {userInfo.name}
+                  </List>
+                  <List>
+                    <strong>닉네임 : </strong>
+                    {isEditingNickname ? (
+                      <div>
+                        <Input type="text" value={newNickname} onChange={handleNicknameChange} />
+                        {isNicknameAvailable ? (
+                          <strong className="text-green-500">사용 가능한 닉네임입니다.</strong>
+                        ) : (
+                          <strong className="text-red-500">이미 사용 중인 닉네임입니다.</strong>
+                        )}
+                      </div>
                     ) : (
-                      <strong className="text-red-500">이미 사용 중인 닉네임입니다.</strong>
+                      userInfo.nickname
                     )}
-                    </div>
-                  ) : (
-                    userInfo.nickname
-                  )}
                     {isEditingNickname ? (
                       <div>
                         <Button onClick={handleNicknameSave}>변경 완료</Button>
@@ -299,20 +291,32 @@ export function TopNavBar() {
                       </div>
                     ) : (
                       <Button onClick={handleNicknameEdit}>닉네임 변경하기</Button>
-                    )}</List>
-                      <List><strong>성별 : </strong>{userInfo.gender}</List>
-                      <List><strong>생년월일 : </strong>{userInfo.birth}</List>
-                      {/* <List><strong>프로필 이미지 : </strong>{userInfo.profileImage}</List> */}
-                    </div>
-                  )}
-
-                </CardBody>
-              
-              <CardFooter className="pt-0">
-                <Button variant="gradient" onClick={() => {handleOpen();}} fullWidth>닫기</Button>
-              </CardFooter>
-            </Card>
-          </Dialog>
+                    )}
+                  </List>
+                  <List>
+                    <strong>성별 : </strong>
+                    {userInfo.gender}
+                  </List>
+                  <List>
+                    <strong>생년월일 : </strong>
+                    {userInfo.birth}
+                  </List>
+                </div>
+              )}
+            </CardBody>
+            <CardFooter className="pt-0">
+              <Button
+                variant="gradient"
+                onClick={() => {
+                  handleOpen();
+                }}
+                fullWidth
+              >
+                닫기
+              </Button>
+            </CardFooter>
+          </Card>
+        </Dialog>
 
         <div id="알림버튼" className="relative top-[2px] ml-[70px] left-[30px]">
           <Badge content={notifications.length}>
@@ -351,23 +355,23 @@ export function TopNavBar() {
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          marginLeft: "5px"
+                          marginLeft: "5px",
                         }}
                       >
                         <TiMediaRecord
                           style={{ marginRight: "0.5rem", fontSize: "15px" }}
                         ></TiMediaRecord>
-                        등록하신 "{notification.postTitle}" 판매 글의 NFT가 판매
-                        되었습니다.
-                        {/* {notification.content} */}
-                      <p
-                        onClick={() => { deleteNotification(notification); } }
-                        variant="outlined"
-                        color="red"
-                        className="ml-4 text-red-500 hover:underline cursor-pointer"
-                      >
-                        삭제
-                      </p>
+                        등록하신 "{notification.postTitle}" 판매 글의 NFT가 판매 되었습니다.
+                        <p
+                          onClick={() => {
+                            deleteNotification(notification);
+                          }}
+                          variant="outlined"
+                          color="red"
+                          className="ml-4 text-red-500 hover:underline cursor-pointer"
+                        >
+                          삭제
+                        </p>
                       </div>
 
                       {index !== notifications.length - 1 && (

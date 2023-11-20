@@ -6,19 +6,14 @@ import {
   Typography,
   CardBody,
   CardFooter,
-  Dialog
+  Dialog,
 } from "@material-tailwind/react";
-import { TiMediaRecord } from "react-icons/ti";
 
 export function NftModal({ isOpen, onClose, selectedNft }) {
   return (
     <Dialog size="sm" open={isOpen} className="bg-transparent shadow-none">
       <Card className="mx-auto w-full  max-w-[48rem]">
-        <CardHeader
-          variant="gradient"
-          color="green"
-          className="grid mb-4 h-28 place-items-center"
-        >
+        <CardHeader variant="gradient" color="green" className="grid mb-4 h-28 place-items-center">
           <Typography variant="h3" color="white">
             NFT
           </Typography>
@@ -32,15 +27,13 @@ export function NftModal({ isOpen, onClose, selectedNft }) {
               style={{ maxWidth: "60%" }}
             />
           </div>
-
           <hr className="border-t border-gray-300 my-4"></hr>
-
           <div
             style={{
               color: "black",
               display: "flex",
               flexDirection: "column",
-              fontSize: "20px"
+              fontSize: "20px",
             }}
           >
             <div
@@ -48,7 +41,7 @@ export function NftModal({ isOpen, onClose, selectedNft }) {
                 color: "black",
                 display: "flex",
                 marginLeft: "20px",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <p>- 소유주: {selectedNft.nickname}</p>
@@ -58,7 +51,7 @@ export function NftModal({ isOpen, onClose, selectedNft }) {
                 color: "black",
                 display: "flex",
                 marginLeft: "20px",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <p>- 동물 이름: {selectedNft.name}</p>
@@ -68,7 +61,7 @@ export function NftModal({ isOpen, onClose, selectedNft }) {
                 color: "black",
                 display: "flex",
                 marginLeft: "20px",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <p>- 나이: {selectedNft.age}</p>
@@ -78,7 +71,7 @@ export function NftModal({ isOpen, onClose, selectedNft }) {
                 color: "black",
                 display: "flex",
                 marginLeft: "20px",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <p>- 특징: {selectedNft.feature}</p>
@@ -96,7 +89,7 @@ export function NftModal({ isOpen, onClose, selectedNft }) {
   );
 }
 
-export function MidModal({ isOpen, onClose, selectedCard, goToNft }) {
+export function MidModal({ isOpen, selectedCard }) {
   if (!isOpen) return null;
 
   return (
@@ -107,7 +100,7 @@ export function MidModal({ isOpen, onClose, selectedCard, goToNft }) {
           transform: "translate(-310px, -130px)",
           maxWidth: "20rem",
           maxHeight: "80vh",
-          margin: "0 auto"
+          margin: "0 auto",
         }}
       >
         <div style={{ backgroundColor: "purple", padding: "65px" }}>

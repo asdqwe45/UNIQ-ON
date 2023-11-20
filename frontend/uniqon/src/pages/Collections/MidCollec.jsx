@@ -9,19 +9,15 @@ import { TiArrowLeftThick } from "react-icons/ti";
 
 export function MidCollections() {
   const navigate = useNavigate();
-
-  const { mainCollecId, setMidCollecId, setMidCollecType, setMidCollecImg } =
-    useCollectionsStore();
-
+  const { mainCollecId, setMidCollecId, setMidCollecType, setMidCollecImg } = useCollectionsStore();
   const [midCardsData, setMidCardsData] = useState([]);
   const [selectedCard, setSelectedCard] = useState({
     id: "",
     image: "",
-    feature: ""
+    feature: "",
   });
   const splitFeature = selectedCard.feature.split("/");
   const [hoveredCards, setHoveredCards] = useState({});
-
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(8);
   const handlePageChange = (page) => {
@@ -33,11 +29,11 @@ export function MidCollections() {
       setSelectedCard({
         id: card.id,
         image: card.image,
-        feature: card.feature
+        feature: card.feature,
       });
       setHoveredCards((preHoveredCards) => ({
         ...preHoveredCards,
-        [card.id]: isHovered
+        [card.id]: isHovered,
       }));
     }
   };
@@ -45,11 +41,7 @@ export function MidCollections() {
   useEffect(() => {
     async function middleList() {
       try {
-        const response = await axios.get(
-          `/api/collections/list/middle/${mainCollecId}`
-        );
-        console.log("success", response);
-
+        const response = await axios.get(`/api/collections/list/middle/${mainCollecId}`);
         setMidCardsData(response.data.response.content);
       } catch (e) {
         console.log("failed: ", e);
@@ -99,7 +91,7 @@ export function MidCollections() {
                                   <span
                                     style={{
                                       display: "flex",
-                                      alignItems: "center"
+                                      alignItems: "center",
                                     }}
                                   >
                                     {index + 1}. {feature}.
@@ -157,9 +149,7 @@ export function MidCollections() {
             <div className="flex flex-row " style={{ marginTop: "550px" }}>
               <div style={{ marginRight: "600px" }}>
                 <Button onClick={() => navigate(-1)}>
-                  <TiArrowLeftThick
-                    style={{ fontSize: "20px" }}
-                  ></TiArrowLeftThick>
+                  <TiArrowLeftThick style={{ fontSize: "20px" }}></TiArrowLeftThick>
                 </Button>
               </div>
               <div className="flex items-center ">

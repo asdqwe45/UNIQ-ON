@@ -1,22 +1,20 @@
 import { Button } from "@material-tailwind/react";
-import { LoginButton } from "../../components/Auth/LoginButton"
-import { SignUpButton } from "../../components/Auth/SignUpButton";
+import { LoginButton } from "../../components/Auth/LoginButton";
 import useUserInfoStore from "../../stores/UserInfoStore";
-import axios from "axios"
+import axios from "axios";
 
 export function Login() {
-  const {walletAddress, accessToken}=useUserInfoStore()
-  // 정보 조회
+  const { walletAddress, accessToken } = useUserInfoStore();
   async function getMyPageInfo() {
     try {
-      const response = await axios.get("/api/myPage/info/"+walletAddress,{
-        headers:{
-          Authorization: "Bearer " + accessToken
-        }
+      const response = await axios.get("/api/myPage/info/" + walletAddress, {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
       });
-      console.log('성공', response);
+      console.log("성공", response);
     } catch (error) {
-      console.log('실패', error);
+      console.log("실패", error);
     }
   }
   return (

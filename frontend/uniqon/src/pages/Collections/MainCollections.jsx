@@ -7,30 +7,17 @@ import { TopNavBar } from "../../components/Common/TopNavBar";
 
 export function MainCollections() {
   const navigate = useNavigate();
-  const {
-    setMainCollecId,
-    setMainCollecType,
-    setMainCollecImg,
-    mainType,
-    setMainType
-  } = useCollectionsStore();
+  const { setMainCollecId, setMainCollecType, setMainCollecImg, mainType, setMainType } =
+    useCollectionsStore();
 
   const [mainCardsData, setMainCardsData] = useState([]);
 
   useEffect(() => {
     async function mainList() {
       try {
-        const response = await axios.get(`/api/collections/list/main`, {
-          // params: {
-          //   page: currentPage,
-          //   size: pageSize
-          // }
-        });
-        console.log("success", response);
-
+        const response = await axios.get(`/api/collections/list/main`, {});
         setMainCardsData(response.data.response.content);
         setMainType(response.data.response.content.map((item) => item.type));
-        console.log("mainType", mainType);
       } catch (e) {
         console.log("failed", e);
       }

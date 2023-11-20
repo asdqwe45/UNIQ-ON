@@ -1,12 +1,4 @@
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Tooltip
-} from "@material-tailwind/react";
+import { Button, Card, CardHeader, CardBody } from "@material-tailwind/react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { TopNavBar } from "../../components/Common/TopNavBar";
@@ -25,12 +17,9 @@ export function NFT() {
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
   const [feature, setFeature] = useState("");
-
   const [selectedMain, setSelectedMain] = useState("");
   const [selectedMiddle, setSelectedMiddle] = useState("");
-
   const { accessToken } = useUserInfoStore();
-
   const { mainType } = useCollectionsStore();
   const [isExistImg, setIsExisImg] = useState("");
 
@@ -38,105 +27,107 @@ export function NFT() {
     여우: [
       {
         id: 0,
-        species: "벵골 여우"
+        species: "벵골 여우",
       },
       {
         id: 1,
-        species: "아프간 여우"
+        species: "아프간 여우",
       },
       {
         id: 2,
-        species: "케이프 여우"
-      }
+        species: "케이프 여우",
+      },
     ],
     도마뱀: [
       {
         id: 0,
-        species: "크레스티드 게코 도마뱀"
+        species: "크레스티드 게코 도마뱀",
       },
       {
         id: 1,
-        species: "레오파드게코 도마뱀"
+        species: "레오파드게코 도마뱀",
       },
       {
         id: 2,
-        species: "턱수염 도마뱀"
-      }
+        species: "턱수염 도마뱀",
+      },
     ],
     거북: [
       {
         id: 0,
-        species: "쟁기 거북"
+        species: "쟁기 거북",
       },
       {
         id: 1,
-        species: "붉은귀 거북"
+        species: "붉은귀 거북",
       },
       {
         id: 2,
-        species: "커먼 머스크 터틀"
-      }
+        species: "커먼 머스크 터틀",
+      },
     ],
     앵무새: [
       {
         id: 0,
-        species: "금강 앵무"
+        species: "금강 앵무",
       },
       {
         id: 1,
-        species: "모란 앵무"
+        species: "모란 앵무",
       },
       {
         id: 2,
-        species: "오색 앵무"
-      }
+        species: "오색 앵무",
+      },
     ],
     물고기: [
       {
         id: 0,
-        species: "구피"
+        species: "구피",
       },
       {
         id: 1,
-        species: "플라워혼"
+        species: "플라워혼",
       },
       {
         id: 2,
-        species: "플래티"
-      }
+        species: "플래티",
+      },
     ],
     뱀: [
       {
         id: 0,
-        species: "킹코브라"
+        species: "킹코브라",
       },
       {
         id: 1,
-        species: "밀크스네이크"
+        species: "밀크스네이크",
       },
       {
         id: 2,
-        species: "볼파이톤"
-      }
+        species: "볼파이톤",
+      },
     ],
     카멜레온: [
       {
         id: 0,
-        species: "베일드 카멜레온"
+        species: "베일드 카멜레온",
       },
       {
         id: 1,
-        species: "피그미 카멜레온"
+        species: "피그미 카멜레온",
       },
       {
         id: 2,
-        species: "파슨 카멜레온"
-      }
+        species: "파슨 카멜레온",
+      },
     ],
-    '🌟': [
+    "🌟": [
       {
-        id: 0, species: "아펜 핀셔"
-      }]
+        id: 0,
+        species: "아펜 핀셔",
+      },
+    ],
   };
 
   const [imgBase64, setImgBase64] = useState("");
@@ -145,41 +136,26 @@ export function NFT() {
   const [blob, setBlob] = useState(null);
   const [ipfsUrl, setIpfsUrl] = useState({
     imageIpfsHash: "",
-    nftMetadataHash: ""
+    nftMetadataHash: "",
   });
   const [status, setStatus] = useState(0);
   const [hash, setHash] = useState("");
   const [tokenId, setTokenId] = useState(0);
-  const contractAddress = "0x303a548f56ff203d435190ea3a082b59d726ce36";
   const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // 대분류 값 변경
   const mainChange = (selectedMain) => {
-    console.log("대분류 변경전", selectedMain);
     setSelectedMain(selectedMain);
     setSpecies(selectedMain);
-    console.log("대분류 변경 후", selectedMain);
   };
 
-  // 중분류 값 변경
   const middleChange = (selectedMiddle) => {
-    console.log("중분류 변경 전", selectedMiddle);
     setSelectedMiddle(selectedMiddle);
-    console.log("중분류 변경 후", selectedMiddle);
   };
-
-  // useEffect(() => {
-  //   document.getElementById("aiImg").src = aiImgUrl;
-  // }, [aiImgUrl]);
 
   useEffect(() => {
     console.log(status);
   }, [status]);
-
-  // useEffect(() => {
-  //   setSelectedMiddle("");
-  // }, [selectedMain]);
 
   const handleImgChange = (e) => {
     const file = e.target.files[0];
@@ -191,7 +167,6 @@ export function NFT() {
     if (file) {
       setIsExisImg(URL.createObjectURL(file));
     }
-    // console.log(isExistImg);
     reader.readAsDataURL(file);
   };
 
@@ -206,7 +181,7 @@ export function NFT() {
     }
     const data = {
       init_images: [imgBase64],
-      species: species
+      species: species,
     };
     try {
       setIsLoading(true);
@@ -216,20 +191,17 @@ export function NFT() {
         data,
         {
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          responseType: "arraybuffer"
+          responseType: "arraybuffer",
         }
       );
       if (respone1.status === 200) {
         setIsLoading(false);
-        console.log("요청 성공");
-        console.log(respone1);
         const blob = new Blob([respone1.data], { type: "image/png" });
         const imageUrl = URL.createObjectURL(blob);
         setBlob(blob);
         setAiImgUrl(imageUrl);
-        console.log("AI 이미지", imageUrl);
       } else {
         console.error("요청 실패");
       }
@@ -258,19 +230,12 @@ export function NFT() {
     ) {
       alert("빈칸이 있습니다. 다시 확인해 주세요.");
     } else {
-      // 위에 IPFS에 요청해서 받은 ipfsJsonUrl 담아서 요청
       const provider = new ethers.BrowserProvider(window.ethereum);
-      // 싸피 네트워크 주소로 변경
-      const net = new ethers.JsonRpcProvider(
-        "https://gethrpc.ssafy-blockchain.com"
-      );
-      // console.log(net)
+      const net = new ethers.JsonRpcProvider("https://gethrpc.ssafy-blockchain.com");
       const signer = await provider.getSigner();
-
-      const balance=await provider.getBalance(signer.getAddress())
-
-      if(balance<ethers.parseEther("0.0006")){
-        alert("잔액이 부족합니다.")
+      const balance = await provider.getBalance(signer.getAddress());
+      if (balance < ethers.parseEther("0.0006")) {
+        alert("잔액이 부족합니다.");
         return;
       }
       if (isNaN(age)) {
@@ -283,38 +248,28 @@ export function NFT() {
         name: name,
         middleClassificationName: selectedMiddle,
         feature: feature,
-        age: age
+        age: age,
       });
       formData.append("data", new Blob([json], { type: "application/json" }));
       let ipfsResponse = {};
       try {
-        console.log("실행1");
         const response2 = await axios.post("/api/nfts/ipfs", formData, {
           headers: {
             Authorization: "Bearer " + accessToken,
-            "Content-Type": "multipart/form-data"
-          }
+            "Content-Type": "multipart/form-data",
+          },
         });
         if (response2.status === 200 && response2.data.success) {
-          console.log("IPFS 저장 성공", response2);
           setIpfsUrl(response2.data.response);
           ipfsResponse = response2.data.response;
-          console.log("ipfsurl", ipfsUrl);
         } else {
           alert("중복 닉네임입니다! 다른 닉네임을 선택해주세요!");
           return;
         }
       } catch (error) {
         console.log("IPFS 저장 실패", error);
-        console.log(typeof selectedMiddle);
-        console.log(typeof name);
-        console.log(typeof feature);
-        console.log(typeof age);
       }
 
-
-      //나중에 싸피 네트워크 컨트랙트 주소로 변경 필요
-      // const contractAddress="0x6fc6B313E41117C2Bf293C9E7a12cc8248d95245"
       const contractAddress = "0x303a548f56ff203d435190ea3a082b59d726ce36";
       const gasProvider = await provider.getFeeData();
       const contractInstance = new ethers.Contract(
@@ -326,7 +281,6 @@ export function NFT() {
 
       const fee = ethers.parseEther("0.0005");
       const options = { value: fee };
-      //백에서 받은 ipfsJsonUrl 넣어주기
       const ipfsJsonUrl = ipfsResponse.nftMetadataHash;
       const receipt = await contractInstance
         .connect(signer)
@@ -338,19 +292,8 @@ export function NFT() {
       setHash(receipt.hash);
       setTokenId(parseInt(txReceipt.logs[1].data, 16));
       setAddress(signer.address);
-      console.log("2번째 실행");
-      // status 1이면 성공 아니면 실패
-      // 에러 처리 해서 실패했을 경우엔 백에 다음 요청 보내지 않기
-      console.log(txReceipt.status);
-
-      //다음 요청에 보내야 하는 값들
-      console.log(receipt.hash); //tx hash
-      console.log(parseInt(txReceipt.logs[1].data, 16)); //tokenId
-      console.log(contractAddress); //컨트랙트 주소
-      console.log(signer.address);
 
       if (txReceipt.status === 1) {
-        console.log("3번째");
         try {
           const registerData = {
             walletAddress: signer.address,
@@ -362,91 +305,28 @@ export function NFT() {
             image: ipfsResponse.imageIpfsHash,
             nftMetadata: ipfsResponse.nftMetadataHash,
             tokenId: parseInt(txReceipt.logs[1].data, 16),
-            contractAddress: contractAddress
+            contractAddress: contractAddress,
           };
           const registerFormdata = new FormData();
           registerFormdata.append(
             "data",
             new Blob([JSON.stringify(registerData)], {
-              type: "application/json"
+              type: "application/json",
             })
           );
-          const response4 = await axios.post(
-            "/api/nfts/register",
-            registerFormdata,
-            {
-              headers: {
-                Authorization: "Bearer " + accessToken
-              }
-            }
-          );
+          const response4 = await axios.post("/api/nfts/register", registerFormdata, {
+            headers: {
+              Authorization: "Bearer " + accessToken,
+            },
+          });
           alert("NFT 발급이 완료 되었습니다.");
           navigate("/mypage");
-          console.log("NFT 발급 성공", response4);
         } catch (error) {
           console.log("NFT 발급 실패", error);
         }
       }
     }
-    // 위에 aiimg에 요청해서 받은 이미지 url 담아서 요청
-    // } else {
-    //   console.log("status 1이 아니므로 실패");
-    // }
   }
-
-  // nft 등록
-  // async function nftAdd() {
-  //   try {
-  //     // 요청을 보낼 데이터
-  //     const data = {
-  //       walletAddress: "string",
-  //       middleClassificationId: selectedMiddle,
-  //       nftAddress: "string",
-  //       name: name,
-  //       feature: feature,
-  //       age: age
-  //     };
-
-  //     const formData = new FormData();
-  //     formData.append(
-  //       "data",
-  //       new Blob([JSON.stringify(data)], { type: "application/json" })
-  //     );
-  //     formData.append("file", nftImg.current.files[0]);
-
-  //     const response = await axios.post("/api/nfts/register", formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data"
-  //       },
-  //       // 파일 직접 넣기
-  //       file: nftImg.current.files[0]
-  //     });
-
-  //     console.log("success: ", response);
-  //   } catch (e) {
-  //     console.log("failed: ", e);
-  //   }
-  // }
-
-  // nft 조회
-  // async function nftInfo() {
-  //   try {
-  //     const response = await axios.get("/api/nfts/0");
-  //     console.log("success: ", response);
-  //   } catch (e) {
-  //     console.log("failed: ", e);
-  //   }
-  // }
-
-  // nft 삭제
-  // async function nftDelete() {
-  //   try {
-  //     const response = await axios.delete("/api/nfts/0");
-  //     console.log("success: ", response);
-  //   } catch (e) {
-  //     console.log("failed: ", e);
-  //   }
-  // }
 
   return (
     <div className="App">
@@ -460,21 +340,11 @@ export function NFT() {
                 <Card className="w-[600px]">
                   <CardHeader floated={false} className="">
                     <span className="flex justify-center">
-                      <div
-
-                      // onClick={() => nftImg.current.click()}
-                      // style={{
-                      //   cursor: "pointer",
-                      //   display: "flex",
-                      //   justifyContent: "center",
-                      //   alignItems: "center"
-                      // }}
-                      // onClick={handleButtonClick}
-                      >
+                      <div>
                         <p
                           style={{
                             color: "black",
-                            fontWeight: "bold"
+                            fontWeight: "bold",
                           }}
                         >
                           이미지 업로드
@@ -497,16 +367,13 @@ export function NFT() {
                         {isExistImg && <p>이미지 업로드 완료!</p>}
                       </div>
                       <div>
-                        <p style={{ color: "black", fontWeight: "bold" }}>
-                          AI 이미지 생성
-                        </p>
+                        <p style={{ color: "black", fontWeight: "bold" }}>AI 이미지 생성</p>
                         <button
                           className="text-2xl w-60 "
-                          // onClick={handleSubmit}
                           style={{
                             fontWeight: "bold",
                             color: "black",
-                            marginTop: "12px"
+                            marginTop: "12px",
                           }}
                         >
                           <lord-icon
@@ -518,66 +385,21 @@ export function NFT() {
                           ></lord-icon>
                         </button>
                       </div>
-                      {/* <lord-icon
-                        src="https://cdn.lordicon.com/emzrtjck.json"
-                        onClick={handleSubmit}
-                        trigger="hover"
-                        colors="outline:#121331,primary:#08a88a"
-                        style={{ width: "150px", height: "150px" }}
-                      /> */}
                     </span>
                   </CardHeader>
                   <CardBody className="text-center">
                     <span>
-                      {/* <input
-                        type="file"
-                        onChange={handleImgChange}
-                        ref={nftImg}
-                        accept="image/*"
-                        style={{ display: "none" }}
-                      /> */}
                       <div
                         style={{
                           position: "relative",
-                          display: "inline-block"
+                          display: "inline-block",
                         }}
-                      >
-                        {/* <input
-                          type="text"
-                          placeholder="종 입력 (예: fox)"
-                          style={{
-                            border: "1px solid black",
-                            borderRadius: "5px",
-                            paddingRight: "30px" // 오른쪽에 버튼의 너비만큼 여백을 추가,
-                          }}
-                          value={species}
-                          onChange={(e) => setSpecies(e.target.value)}
-                        /> */}
-                        {/* <Button
-                          style={{
-                            position: "absolute",
-                            top: "0",
-                            right: "0",
-                            backgroundColor: "lightgray",
-                            color: "black",
-                            border: "1px solid black",
-                            borderRadius: "0 5px 5px 0", // 버튼 모서리 둥글게 설정
-                            padding: "5px 5px", // 버튼 패딩 설정
-                            cursor: "pointer",
-                            height: "39px",
-                            lineHeight: "20px",
-                            fontSize: "20px"
-                          }}
-                          onClick={handleSubmit}
-                        >
-                          AI 변환
-                        </Button> */}
-                      </div>
+                      ></div>
                       <div
                         style={{
                           display: "flex",
                           justifyContent: "center",
-                          alignItems: "center"
+                          alignItems: "center",
                         }}
                       >
                         <div
@@ -590,7 +412,7 @@ export function NFT() {
                             alignItems: "center",
                             borderRadius: "15px",
                             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
-                            fontSize: "20px"
+                            fontSize: "20px",
                           }}
                         >
                           {isExistImg ? (
@@ -618,7 +440,7 @@ export function NFT() {
                               alignItems: "center",
                               borderRadius: "15px",
                               boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
-                              fontSize: "20px"
+                              fontSize: "20px",
                             }}
                           >
                             {isLoading ? (
@@ -634,7 +456,7 @@ export function NFT() {
                         style={{
                           display: "flex",
                           justifyContent: "center",
-                          alignItems: "center"
+                          alignItems: "center",
                         }}
                       >
                         <Button
@@ -651,7 +473,6 @@ export function NFT() {
                           ></lord-icon>
                         </Button>
                       </div>
-                      {/* <span>발급비용 : 0.005 ETH </span> */}
                       <div>
                         <div className="inline-flex">
                           발급비용 : 0.005 ETH <FaEthereum className="" />
@@ -662,23 +483,14 @@ export function NFT() {
                 </Card>
 
                 <div className="flex w-96 flex-col gap-20">
-                  <Select
-                    variant="standard"
-                    label="대분류"
-                    onChange={mainChange}
-                  >
+                  <Select variant="standard" label="대분류" onChange={mainChange}>
                     {mainType.map((option) => (
                       <Option key={option} value={option}>
                         {option}
                       </Option>
                     ))}
                   </Select>
-                  {/* {selectedMain && ( */}
-                  <Select
-                    variant="standard"
-                    label="중분류"
-                    onChange={middleChange}
-                  >
+                  <Select variant="standard" label="중분류" onChange={middleChange}>
                     {selectedMain &&
                       (selectedMain === "그 외"
                         ? [{ id: 0, species: "그 외" }]
@@ -688,49 +500,17 @@ export function NFT() {
                           {option.species}
                         </Option>
                       ))}
-                    {/* middleOptions[selectedMain].map((option) => (
-                        <Option key={option.id} value={option.species}>
-                          {option.species}
-                        </Option>
-                      ))} */}
                   </Select>
-
-                  {/* )} */}
                   <Input
                     variant="standard"
                     label="이름"
                     onChange={(e) => setName(e.target.value)}
                   />
-                  <Input
-                    variant="standard"
-                    label="나이"
-                    onChange={(e) => setAge(e.target.value)}
-                  />
-                  <Textarea
-                    label="특징"
-                    onChange={(e) => setFeature(e.target.value)}
-                  />
+                  <Input variant="standard" label="나이" onChange={(e) => setAge(e.target.value)} />
+                  <Textarea label="특징" onChange={(e) => setFeature(e.target.value)} />
                 </div>
               </div>
             </div>
-
-            {/* NFT 조회 버튼 */}
-            {/* <Button
-            className="m-5 text-3xl w-70 h-30"
-            onClick={nftInfo}
-            color="blue"
-            >
-            NFT 조회
-          </Button> */}
-
-            {/* NFT 삭제 버튼 */}
-            {/* <Button
-            className="m-5 text-3xl w-70 h-30"
-            onClick={nftDelete}
-            color="blue"
-            >
-            NFT 삭제 
-          </Button> */}
           </div>
         </div>
       </header>

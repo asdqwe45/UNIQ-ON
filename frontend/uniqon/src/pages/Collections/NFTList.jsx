@@ -11,7 +11,6 @@ import useUserInfoStore from "../../stores/UserInfoStore";
 
 export function NFTList() {
   const { midCollecId, midCollecType, midCollecImg } = useCollectionsStore();
-
   const navigate = useNavigate();
   const [nftData, setNftData] = useState([]);
   const [selectedNft, setSelectedNft] = useState({
@@ -20,28 +19,22 @@ export function NFTList() {
     name: "",
     age: "",
     nickname: "",
-    feature: ""
+    feature: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
-
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(4);
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
   const [likedCards, setLikedCards] = useState({});
   const { accessToken, walletAddress } = useUserInfoStore();
 
   useEffect(() => {
     async function nftList() {
       try {
-        const response = await axios.get(
-          `/api/collections/list/nft/${midCollecId}`
-        );
-        console.log("success", response);
-
+        const response = await axios.get(`/api/collections/list/nft/${midCollecId}`);
         setNftData(response.data.response.content);
       } catch (e) {
         console.log("failed", e);
@@ -55,14 +48,13 @@ export function NFTList() {
   const currentPageData = nftData.slice(startIndex, endIndex);
 
   const clickNft = (card) => {
-    console.log("selectednft", card);
     setSelectedNft({
       id: card.id,
       name: card.name,
       image: card.image,
       age: card.age,
       nickname: card.ownerNickname,
-      feature: card.feature
+      feature: card.feature,
     });
     setIsModalOpen(!isModalOpen);
   };
@@ -81,24 +73,18 @@ export function NFTList() {
     setLikedCards(newLikeCards);
   }, [nftData]);
 
-  // 좋아요 버튼 클릭 시 처리할 함수
   const toggleLike = (card) => {
     const nftId = card.id;
 
-    console.log("지갑주소", walletAddress);
-
     if (!likedCards[nftId]) {
       localStorage.setItem(`liked_${nftId}`, "liked");
-
       axios
         .post(`api/nfts/like/${nftId}`, {
           headers: {
-            Authorization: "Bearer " + accessToken
-          }
+            Authorization: "Bearer " + accessToken,
+          },
         })
         .then((response) => {
-          console.log("좋아요 성공", response.data);
-          console.log("nftId", nftId);
           setLikedCards({ ...likedCards, [nftId]: true });
         })
         .catch((error) => {
@@ -110,11 +96,10 @@ export function NFTList() {
       axios
         .delete(`/api/nfts/undolike/${nftId}`, {
           headers: {
-            Authorization: "Bearer " + accessToken
-          }
+            Authorization: "Bearer " + accessToken,
+          },
         })
         .then((response) => {
-          console.log("좋아요 취소 성공", response.data);
           setLikedCards({ ...likedCards, [nftId]: false });
         })
         .catch((error) => {
@@ -123,22 +108,19 @@ export function NFTList() {
     }
   };
 
-  // 검색 기능
   const handleSearch = async () => {
     try {
       const response = await axios.get(`/api/collections/search`, {
         params: {
-          query: searchKeyword
-        }
+          query: searchKeyword,
+        },
       });
       setNftData(response.data.response.content);
-      console.log("검색 결과", response.data.response.content);
     } catch (error) {
       console.log("검색 요청 실패", error);
     }
   };
 
-  // 검색 키 다운
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSearch();
@@ -171,7 +153,7 @@ export function NFTList() {
             </div>
 
             <br></br>
-            {/* 선택된 중분류 카드 보여줌 */}
+
             <div className="flex  flex-col items-center">
               <div className="mt-[220px] mb-[180px] px-4 relative">
                 <div className="absolute left-1/2 top-1/2 h-80 w-72 -translate-x-1/2 -translate-y-1/2  rounded-2xl bg-teal-100"></div>
@@ -200,8 +182,6 @@ export function NFTList() {
                 </div>
               </div>
             </div>
-
-            {/* NFT 카드 리스트를 보여줌 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {currentPageData.map((card, index) => (
                 <div
@@ -248,7 +228,6 @@ export function NFTList() {
                 </div>
               ))}
             </div>
-
             <div>
               <NftModal
                 isOpen={isModalOpen}
@@ -259,9 +238,7 @@ export function NFTList() {
             <div className="flex flex-row">
               <div style={{ marginRight: "600px" }}>
                 <Button onClick={() => navigate(-1)}>
-                  <TiArrowLeftThick
-                    style={{ fontSize: "20px" }}
-                  ></TiArrowLeftThick>
+                  <TiArrowLeftThick style={{ fontSize: "20px" }}></TiArrowLeftThick>
                 </Button>
               </div>
               <div className="flex items-center ">
