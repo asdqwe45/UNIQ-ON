@@ -10,17 +10,11 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
-import {
-  LockClosedIcon,
-} from "@heroicons/react/24/solid";
-
-import { LoginButton } from "../Auth/LoginButton"
+import { LockClosedIcon } from "@heroicons/react/24/solid";
+import { LoginButton } from "../Auth/LoginButton";
 import { SignUpButton } from "../Auth/SignUpButton";
 
-
 export function CheckoutForm() {
-
-
   useEffect(() => {
     handleDataFromChild();
   }, []);
@@ -73,50 +67,38 @@ export function CheckoutForm() {
             <TabPanel value="card" className="p-0">
               <form className="mt-8 flex flex-col gap-4">
                 <div>
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className=" font-medium"
-                  >
+                  <Typography variant="small" color="blue-gray" className=" font-medium">
                     UNIQON에서는 METAMASK로 로그인합니다.
-                    
                   </Typography>
-                  
                 </div>
 
                 <div className="mt-2">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className=" font-semibold"
-                  >
-                    
+                  <Typography variant="small" color="blue-gray" className=" font-semibold">
                     그전에 먼저 DITI로 신원인증을 해야 합니다.
                   </Typography>
-                  
                 </div>
-                <LoginButton onDataFromChild={handleDataFromChild}/>
+                <LoginButton onDataFromChild={handleDataFromChild} />
 
                 <Typography
                   variant="small"
                   color="gray"
                   className="mt-2 flex items-center justify-center gap-2 font-normal opacity-60"
                 >
-                  <LockClosedIcon className="-mt-0.5 h-4 w-4" /> Your Private Key is
-                  secure and encrypted
+                  <LockClosedIcon className="-mt-0.5 h-4 w-4" /> Your Private Key is secure and
+                  encrypted
                 </Typography>
               </form>
             </TabPanel>
             <TabPanel value="paypal" className="p-0">
               <form className="mt-8 flex flex-col gap-4">
-                <SignUpButton onDataFromChild={handleDataFromChild}/>
+                <SignUpButton onDataFromChild={handleDataFromChild} />
                 <Typography
                   variant="small"
                   color="gray"
                   className="mt-2 flex items-center justify-center gap-2 font-normal opacity-60"
                 >
-                  <LockClosedIcon className="-mt-0.5 h-4 w-4" /> Your Private Key is
-                  secure and encrypted
+                  <LockClosedIcon className="-mt-0.5 h-4 w-4" /> Your Private Key is secure and
+                  encrypted
                 </Typography>
               </form>
             </TabPanel>
